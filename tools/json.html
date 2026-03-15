@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JSON Formatter & Validator — Prettify & Minify JSON | HexHelp AI</title>
+  <meta name="description" content="Free online JSON formatter and validator. Prettify, minify and validate JSON with syntax highlighting, error detection, sort keys and one-click copy." />
+  <meta name="keywords" content="JSON formatter, JSON validator, JSON prettify, JSON minify, JSON beautifier, format JSON online, validate JSON, JSON syntax checker" />
+  <meta name="author" content="HexHelp AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hexhelpai.com/tools/json.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hexhelpai.com/tools/json.html" />
+  <meta property="og:title" content="JSON Formatter & Validator — Prettify & Minify JSON | HexHelp AI" />
+  <meta property="og:description" content="Free online JSON formatter and validator. Prettify, minify and validate JSON with syntax highlighting, error detection, sort keys and one-click copy." />
+  <meta property="og:image" content="https://hexhelpai.com/assets/og-image.png" />
+  <meta property="og:site_name" content="HexHelp AI" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="JSON Formatter & Validator — Prettify & Minify JSON | HexHelp AI" />
+  <meta name="twitter:description" content="Free online JSON formatter and validator. Prettify, minify and validate JSON with syntax highlighting, error detection, sort keys and one-click copy." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--cyan:#06b6d4;--orange:#f97316;--red:#ef4444}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(6,182,212,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:3rem 2rem 5rem}
+    .page-header{text-align:center;margin-bottom:2.5rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.25rem;box-shadow:0 0 40px rgba(6,182,212,0.15)}
+    .page-title{font-size:2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.5rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--cyan) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:0.95rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Toolbar */
+    .toolbar{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0.875rem 1.25rem;margin-bottom:1rem}
+    .toolbar-group{display:flex;gap:0.4rem;align-items:center}
+    .toolbar-sep{width:1px;height:24px;background:var(--border);margin:0 0.25rem}
+    .tbtn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:0.8rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;white-space:nowrap}
+    .tbtn:hover{border-color:rgba(99,102,241,0.4);color:var(--accent3)}
+    .tbtn.active{background:rgba(99,102,241,0.15);border-color:var(--accent);color:var(--accent3)}
+    .tbtn.danger:hover{border-color:rgba(239,68,68,0.4);color:#fca5a5}
+    .tbtn.success:hover{border-color:rgba(34,211,165,0.4);color:var(--green)}
+    .indent-sel{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--muted);font-size:0.8rem;font-family:'Inter',sans-serif;outline:none;cursor:pointer}
+
+    /* Status bar */
+    .status-bar{display:flex;align-items:center;gap:1rem;padding:0.6rem 1rem;border-radius:10px;font-size:0.78rem;margin-bottom:1rem;transition:all 0.3s}
+    .status-bar.valid{background:rgba(34,211,165,0.08);border:1px solid rgba(34,211,165,0.2)}
+    .status-bar.invalid{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2)}
+    .status-bar.idle{background:var(--surface);border:1px solid var(--border)}
+    .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .status-bar.valid .status-dot{background:var(--green)}
+    .status-bar.invalid .status-dot{background:var(--red)}
+    .status-bar.idle .status-dot{background:var(--muted)}
+    .status-msg{flex:1;color:var(--text)}
+    .status-bar.invalid .status-msg{color:#fca5a5}
+    .status-bar.valid .status-msg{color:var(--green)}
+    .status-meta{color:var(--muted);font-size:0.72rem}
+
+    /* Editor area */
+    .editor-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .editor-panel{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;min-height:480px}
+    .editor-header{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1.25rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
+    .editor-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
+    .editor-title.input-label{color:var(--cyan)}
+    .editor-title.output-label{color:var(--green)}
+    .editor-actions{display:flex;gap:0.4rem}
+    .ea-btn{background:transparent;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:0.7rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+    .ea-btn:hover{border-color:rgba(99,102,241,0.4);color:var(--accent3)}
+    .ea-btn.copied{border-color:var(--green);color:var(--green)}
+    textarea.editor{flex:1;background:var(--bg2);border:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.82rem;padding:1.25rem;resize:none;outline:none;line-height:1.7;tab-size:2}
+    textarea.editor::placeholder{color:var(--muted)}
+    .output-area{flex:1;background:var(--bg2);overflow:auto;padding:1.25rem}
+    pre#json-output{font-family:'JetBrains Mono',monospace;font-size:0.82rem;line-height:1.7;white-space:pre-wrap;word-break:break-all;margin:0}
+
+    /* Syntax colors */
+    .j-key{color:#a5b4fc}
+    .j-str{color:#86efac}
+    .j-num{color:#fdba74}
+    .j-bool{color:#f0abfc}
+    .j-null{color:#94a3b8}
+    .j-brace{color:#e8eaf0;opacity:0.8}
+
+    /* Stats */
+    .stats-row{display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1rem}
+    .stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:0.78rem;color:var(--muted)}
+    .stat-pill span{color:var(--text);font-weight:600}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:768px){.editor-wrap{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">📋</div>
+    <h1 class="page-title">JSON <span class="gradient">Formatter & Validator</span></h1>
+    <p class="page-sub">Prettify, minify, and validate JSON with syntax highlighting and instant error detection.</p>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button class="tbtn active" id="btn-pretty" onclick="setOutputMode('pretty')">Pretty Print</button>
+      <button class="tbtn" id="btn-minify" onclick="setOutputMode('minify')">Minify</button>
+      <button class="tbtn" id="btn-sort" onclick="setOutputMode('sort')">Sort Keys</button>
+    </div>
+    <div class="toolbar-sep"></div>
+    <div class="toolbar-group">
+      <span style="font-size:0.78rem;color:var(--muted)">Indent:</span>
+      <select class="indent-sel" id="indent-sel" onchange="format()">
+        <option value="2">2 spaces</option>
+        <option value="4">4 spaces</option>
+        <option value="tab">Tab</option>
+      </select>
+    </div>
+    <div class="toolbar-sep"></div>
+    <div class="toolbar-group">
+      <button class="tbtn success" onclick="copyOutput()">📋 Copy</button>
+      <button class="tbtn success" onclick="downloadOutput()">⬇ Download</button>
+      <button class="tbtn danger" onclick="clearAll()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="status-bar idle" id="status-bar">
+    <div class="status-dot"></div>
+    <div class="status-msg" id="status-msg">Paste JSON to validate…</div>
+    <div class="status-meta" id="status-meta"></div>
+  </div>
+
+  <div class="editor-wrap">
+    <div class="editor-panel">
+      <div class="editor-header">
+        <span class="editor-title input-label">📥 Input JSON</span>
+        <div class="editor-actions">
+          <button class="ea-btn" onclick="pasteInput()">Paste</button>
+          <button class="ea-btn" onclick="loadSample()">Sample</button>
+          <button class="ea-btn" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <textarea class="editor" id="json-input" placeholder='Paste your JSON here…&#10;{"name": "HexHelp", "tools": 6}' oninput="format()"></textarea>
+    </div>
+
+    <div class="editor-panel">
+      <div class="editor-header">
+        <span class="editor-title output-label">📤 Formatted Output</span>
+        <div class="editor-actions">
+          <button class="ea-btn" id="copy-out-btn" onclick="copyOutput()">Copy</button>
+        </div>
+      </div>
+      <div class="output-area"><pre id="json-output">Output will appear here…</pre></div>
+    </div>
+  </div>
+
+  <div class="stats-row" id="stats-row" style="display:none">
+    <div class="stat-pill">Keys: <span id="stat-keys">—</span></div>
+    <div class="stat-pill">Arrays: <span id="stat-arrays">—</span></div>
+    <div class="stat-pill">Depth: <span id="stat-depth">—</span></div>
+    <div class="stat-pill">Size: <span id="stat-size">—</span></div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  let outputMode = 'pretty';
+  let lastParsed = null;
+
+  function setOutputMode(m) {
+    outputMode = m;
+    ['pretty','minify','sort'].forEach(x => document.getElementById('btn-'+x).classList.toggle('active', x===m));
+    format();
+  }
+
+  function getIndent() {
+    const v = document.getElementById('indent-sel').value;
+    return v === 'tab' ? '\t' : parseInt(v);
+  }
+
+  function sortKeys(obj) {
+    if (Array.isArray(obj)) return obj.map(sortKeys);
+    if (obj !== null && typeof obj === 'object') {
+      return Object.keys(obj).sort().reduce((acc, k) => { acc[k] = sortKeys(obj[k]); return acc; }, {});
+    }
+    return obj;
+  }
+
+  function countStats(obj, depth=0) {
+    let keys=0, arrays=0, maxDepth=depth;
+    if (Array.isArray(obj)) {
+      arrays++;
+      obj.forEach(v => { const r=countStats(v,depth+1); keys+=r.keys; arrays+=r.arrays; maxDepth=Math.max(maxDepth,r.maxDepth); });
+    } else if (obj !== null && typeof obj === 'object') {
+      const ks = Object.keys(obj);
+      keys += ks.length;
+      ks.forEach(k => { const r=countStats(obj[k],depth+1); keys+=r.keys; arrays+=r.arrays; maxDepth=Math.max(maxDepth,r.maxDepth); });
+    }
+    return { keys, arrays, maxDepth };
+  }
+
+  function syntaxHighlight(json) {
+    return json
+      .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) return `<span class="j-key">${match}</span>`;
+          return `<span class="j-str">${match}</span>`;
+        }
+        if (/true|false/.test(match)) return `<span class="j-bool">${match}</span>`;
+        if (/null/.test(match)) return `<span class="j-null">${match}</span>`;
+        return `<span class="j-num">${match}</span>`;
+      })
+      .replace(/[{}\[\]]/g, m => `<span class="j-brace">${m}</span>`);
+  }
+
+  function format() {
+    const raw = document.getElementById('json-input').value.trim();
+    const sb = document.getElementById('status-bar');
+    const sm = document.getElementById('status-msg');
+    const sme = document.getElementById('status-meta');
+
+    if (!raw) {
+      sb.className = 'status-bar idle';
+      sm.textContent = 'Paste JSON to validate…';
+      sme.textContent = '';
+      document.getElementById('json-output').innerHTML = 'Output will appear here…';
+      document.getElementById('stats-row').style.display = 'none';
+      lastParsed = null;
+      return;
+    }
+
+    try {
+      let parsed = JSON.parse(raw);
+      lastParsed = parsed;
+
+      if (outputMode === 'sort') parsed = sortKeys(parsed);
+
+      let output;
+      if (outputMode === 'minify') {
+        output = JSON.stringify(parsed);
+      } else {
+        output = JSON.stringify(parsed, null, getIndent());
+      }
+
+      document.getElementById('json-output').innerHTML = syntaxHighlight(
+        output.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      );
+
+      sb.className = 'status-bar valid';
+      sm.textContent = '✓ Valid JSON';
+      sme.textContent = `${raw.length.toLocaleString()} → ${output.length.toLocaleString()} chars`;
+
+      // Stats
+      const s = countStats(parsed);
+      document.getElementById('stat-keys').textContent = s.keys;
+      document.getElementById('stat-arrays').textContent = s.arrays;
+      document.getElementById('stat-depth').textContent = s.maxDepth;
+      document.getElementById('stat-size').textContent = output.length > 1024 ? `${(output.length/1024).toFixed(1)} KB` : `${output.length} B`;
+      document.getElementById('stats-row').style.display = 'flex';
+
+    } catch(e) {
+      lastParsed = null;
+      sb.className = 'status-bar invalid';
+      sm.textContent = `✗ ${e.message}`;
+      sme.textContent = '';
+      document.getElementById('json-output').innerHTML = `<span style="color:#fca5a5">${e.message}</span>`;
+      document.getElementById('stats-row').style.display = 'none';
+    }
+  }
+
+  function copyOutput() {
+    const el = document.getElementById('json-output');
+    navigator.clipboard.writeText(el.innerText).then(() => {
+      const btn = document.getElementById('copy-out-btn');
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      showToast('JSON copied!');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  function downloadOutput() {
+    const text = document.getElementById('json-output').innerText;
+    const blob = new Blob([text], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `hexhelp-formatted.json`;
+    a.click();
+    showToast('Downloaded!');
+  }
+
+  function clearAll() {
+    document.getElementById('json-input').value = '';
+    format();
+  }
+
+  async function pasteInput() {
+    try { document.getElementById('json-input').value = await navigator.clipboard.readText(); format(); } catch {}
+  }
+
+  function loadSample() {
+    document.getElementById('json-input').value = JSON.stringify({
+      "tool": "HexHelp JSON Formatter",
+      "version": "1.0.0",
+      "features": ["pretty print", "minify", "sort keys", "syntax highlighting"],
+      "meta": { "author": "Hex", "domain": "hexhelpai.com", "year": 2026 },
+      "active": true,
+      "rating": 9.8,
+      "tags": null
+    });
+    format();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WHOIS Lookup — Domain Registration & Owner Info | HexHelp AI</title>
+  <meta name="description" content="Free WHOIS lookup tool. Find domain registration date, expiry, registrar, nameservers and owner info for any domain. Uses RDAP protocol." />
+  <meta name="keywords" content="WHOIS lookup, domain lookup, domain registration info, domain owner, domain expiry, registrar lookup, RDAP, domain check" />
+  <meta name="author" content="HexHelp AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hexhelpai.com/tools/whois.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hexhelpai.com/tools/whois.html" />
+  <meta property="og:title" content="WHOIS Lookup — Domain Registration & Owner Info | HexHelp AI" />
+  <meta property="og:description" content="Free WHOIS lookup tool. Find domain registration date, expiry, registrar, nameservers and owner info for any domain. Uses RDAP protocol." />
+  <meta property="og:image" content="https://hexhelpai.com/assets/og-image.png" />
+  <meta property="og:site_name" content="HexHelp AI" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="WHOIS Lookup — Domain Registration & Owner Info | HexHelp AI" />
+  <meta name="twitter:description" content="Free WHOIS lookup tool. Find domain registration date, expiry, registrar, nameservers and owner info for any domain. Uses RDAP protocol." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--bh:rgba(99,102,241,0.4);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--orange:#f97316}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(99,102,241,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(249,115,22,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--orange) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+    .search-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem}
+    .search-row{display:flex;gap:0.75rem;flex-wrap:wrap}
+    .input-domain{flex:1;min-width:200px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:1rem;font-family:'JetBrains Mono',monospace;outline:none;transition:border-color 0.2s}
+    .input-domain:focus{border-color:var(--accent)}
+    .input-domain::placeholder{color:var(--muted)}
+    .btn-primary{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:0.95rem;font-weight:700;cursor:pointer;transition:background 0.2s,transform 0.15s;font-family:'Inter',sans-serif;white-space:nowrap}
+    .btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+    .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+    .error-box{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:12px;padding:1.25rem;color:#fca5a5;font-size:0.9rem;margin-bottom:1rem}
+    .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Result cards */
+    .result-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1rem;margin-bottom:1.5rem}
+    .info-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem}
+    .card-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--orange);margin-bottom:1rem}
+    .kv-row{display:flex;gap:1rem;align-items:flex-start;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .kv-row:last-child{border-bottom:none}
+    .kv-key{font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);min-width:110px;padding-top:2px;flex-shrink:0}
+    .kv-val{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--text);flex:1;word-break:break-all}
+    .kv-copy{cursor:pointer;color:var(--muted);font-size:0.7rem;font-family:'Inter',sans-serif;padding:2px 7px;border:1px solid var(--border);border-radius:4px;background:transparent;transition:all 0.2s;flex-shrink:0}
+    .kv-copy:hover{border-color:var(--accent);color:var(--accent2)}
+    .kv-copy.copied{border-color:var(--green);color:var(--green)}
+    .status-badge{display:inline-block;font-size:0.72rem;font-weight:700;padding:2px 10px;border-radius:100px;margin:2px 2px 2px 0}
+    .status-active{background:rgba(34,211,165,0.15);color:var(--green)}
+    .status-inactive{background:rgba(239,68,68,0.1);color:#fca5a5}
+    .raw-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .raw-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 1.5rem;border-bottom:1px solid var(--border)}
+    .raw-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
+    .raw-body{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);padding:1.25rem 1.5rem;white-space:pre-wrap;word-break:break-all;line-height:1.6;max-height:400px;overflow-y:auto}
+    .raw-body b{color:var(--accent3);font-weight:600}
+    .copy-btn-sm{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:7px;padding:5px 12px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+    .copy-btn-sm:hover{border-color:var(--accent);color:var(--accent2)}
+    .copy-btn-sm.copied{border-color:var(--green);color:var(--green)}
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .hidden{display:none}
+    @media(max-width:600px){.search-row{flex-direction:column}.btn-primary{width:100%}.result-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">🏢</div>
+    <h1 class="page-title">WHOIS / <span class="gradient">Domain Info</span></h1>
+    <p class="page-sub">Registration dates, registrar, nameservers, and contact info for any domain.</p>
+  </div>
+
+  <div class="search-box">
+    <div class="search-row">
+      <input class="input-domain" id="domain-input" type="text" placeholder="e.g. github.com" autocomplete="off" autocapitalize="off" spellcheck="false"/>
+      <button class="btn-primary" id="lookup-btn" onclick="doWhois()">Look Up</button>
+    </div>
+  </div>
+
+  <div id="error-area"></div>
+  <div id="results-area" class="hidden">
+    <div class="result-grid" id="result-grid"></div>
+    <div class="raw-section">
+      <div class="raw-header">
+        <span class="raw-title">📄 Raw WHOIS Data</span>
+        <button class="copy-btn-sm" id="raw-copy-btn" onclick="copyRaw()">Copy</button>
+      </div>
+      <div class="raw-body" id="raw-body"></div>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  document.getElementById('domain-input').addEventListener('keydown', e => { if(e.key==='Enter') doWhois(); });
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  function copyText(text, btn) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓';
+      btn.classList.add('copied');
+      showToast('Copied!');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  function copyRaw() {
+    const text = document.getElementById('raw-body').innerText;
+    const btn = document.getElementById('raw-copy-btn');
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      showToast('Raw WHOIS copied!');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function kvRow(key, val, copyable) {
+    if (!val) return '';
+    const safe = val.toString().replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    const copyBtn = copyable !== false ? `<button class="kv-copy" onclick="copyText('${val.replace(/'/g,"\\'")}',this)">copy</button>` : '';
+    return `<div class="kv-row"><span class="kv-key">${key}</span><span class="kv-val">${safe}</span>${copyBtn}</div>`;
+  }
+
+  function statusBadge(s) {
+    const lower = s.toLowerCase();
+    const ok = lower.includes('ok') || lower.includes('active');
+    return `<span class="status-badge ${ok?'status-active':'status-inactive'}">${s.split(' ')[0]}</span>`;
+  }
+
+  async function doWhois() {
+    const raw = document.getElementById('domain-input').value.trim().replace(/^https?:\/\//,'').split('/')[0];
+    if (!raw) return;
+    const domain = raw.toLowerCase();
+
+    const btn = document.getElementById('lookup-btn');
+    btn.innerHTML = '<span class="spinner"></span>Querying…';
+    btn.disabled = true;
+    document.getElementById('error-area').innerHTML = '';
+    document.getElementById('results-area').classList.add('hidden');
+
+    try {
+      // Use rdap.org (free, no key, CORS-enabled)
+      const r = await fetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`);
+      if (!r.ok) throw new Error(`RDAP error ${r.status}`);
+      const d = await r.json();
+
+      // Parse RDAP response
+      const events = {};
+      (d.events || []).forEach(e => { events[e.eventAction] = e.eventDate; });
+
+      const ns = (d.nameservers || []).map(n => n.ldhName || n.handle || '').filter(Boolean);
+
+      const entities = d.entities || [];
+      const registrar = entities.find(e => (e.roles||[]).includes('registrar'));
+      const registrant = entities.find(e => (e.roles||[]).includes('registrant'));
+
+      const registrarName = registrar?.vcardArray?.[1]?.find(v=>v[0]==='fn')?.[3] || registrar?.handle || '—';
+      const registrantName = registrant?.vcardArray?.[1]?.find(v=>v[0]==='fn')?.[3] || '—';
+
+      const statuses = (d.status || []).map(s => statusBadge(s)).join(' ');
+      const fmtDate = s => s ? new Date(s).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',timeZoneName:'short'}) : '—';
+
+      // Main card
+      let mainHtml = `<div class="info-card">
+        <div class="card-title">🌐 Domain Details</div>
+        ${kvRow('Domain', (d.ldhName||domain).toUpperCase())}
+        ${kvRow('Status', '—')}
+        ${kvRow('Registered', fmtDate(events.registration), false)}
+        ${kvRow('Updated', fmtDate(events['last changed']||events.lastChanged), false)}
+        ${kvRow('Expires', fmtDate(events.expiration), false)}
+        ${kvRow('Registrar', registrarName)}
+      </div>`;
+      mainHtml = mainHtml.replace(`<span class="kv-val">—</span>`, `<span class="kv-val">${statuses||'<span style="color:var(--muted)">—</span>'}</span>`);
+
+      // NS card
+      let nsHtml = `<div class="info-card">
+        <div class="card-title">🗄️ Nameservers</div>
+        ${ns.length ? ns.map(n => kvRow('NS', n)).join('') : '<div style="color:var(--muted);font-size:0.875rem;padding:0.5rem 0">No nameservers found</div>'}
+      </div>`;
+
+      document.getElementById('result-grid').innerHTML = mainHtml + nsHtml;
+
+      // Raw as pretty JSON
+      const rawText = JSON.stringify(d, null, 2);
+      document.getElementById('raw-body').textContent = rawText;
+
+      document.getElementById('results-area').classList.remove('hidden');
+    } catch(e) {
+      document.getElementById('error-area').innerHTML = `<div class="error-box">❌ Lookup failed: ${e.message}<br><small style="opacity:0.7">RDAP may not support this TLD, or the domain doesn't exist.</small></div>`;
+    }
+
+    btn.textContent = 'Look Up';
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>

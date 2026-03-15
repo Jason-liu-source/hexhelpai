@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--teal:#14b8a6}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(20,184,166,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(20,184,166,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(20,184,166,0.12);border:1px solid rgba(20,184,166,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(20,184,166,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--teal) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Category pills */
+    .cat-scroll{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:2rem}
+    .cat-pill{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:7px 16px;font-size:0.82rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+    .cat-pill:hover{border-color:rgba(99,102,241,0.4);color:var(--text)}
+    .cat-pill.active{background:rgba(20,184,166,0.12);border-color:rgba(20,184,166,0.4);color:#5eead4}
+
+    /* Converter card */
+    .converter-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+    .conv-header{padding:1.25rem 1.75rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);display:flex;align-items:center;gap:0.75rem}
+    .conv-icon{font-size:1.4rem}
+    .conv-title{font-size:1rem;font-weight:700;color:var(--text)}
+
+    /* Input row */
+    .input-row{display:flex;gap:0.75rem;padding:1.5rem 1.75rem;align-items:center;border-bottom:1px solid var(--border);background:linear-gradient(135deg,rgba(20,184,166,0.05) 0%,transparent 60%)}
+    .inp-number{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700;outline:none;transition:border-color 0.2s;-moz-appearance:textfield}
+    .inp-number::-webkit-outer-spin-button,.inp-number::-webkit-inner-spin-button{-webkit-appearance:none}
+    .inp-number:focus{border-color:rgba(20,184,166,0.5)}
+    .from-select{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;color:var(--text);font-size:0.9rem;font-weight:600;outline:none;cursor:pointer;font-family:'Inter',sans-serif;min-width:140px}
+    .swap-btn{background:rgba(20,184,166,0.12);border:1px solid rgba(20,184,166,0.25);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+    .swap-btn:hover{background:rgba(20,184,166,0.25);transform:rotate(180deg)}
+
+    /* Results grid */
+    .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0}
+    .result-item{padding:1rem 1.75rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border);transition:background 0.15s;cursor:pointer}
+    .result-item:hover{background:rgba(99,102,241,0.04)}
+    .result-item:last-child{border-bottom:none}
+    .r-unit{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.35rem}
+    .r-val{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:var(--text);word-break:break-all}
+    .r-val.highlight{color:#5eead4}
+    .r-copy-hint{font-size:0.65rem;color:var(--muted);margin-top:2px;opacity:0}
+    .result-item:hover .r-copy-hint{opacity:1}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:600px){.input-row{flex-wrap:wrap}.from-select{width:100%}.inp-number{font-size:1rem}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">📐</div>
+    <h1 class="page-title">Unit <span class="gradient">Converter</span></h1>
+    <p class="page-sub">Convert between units of length, weight, temperature, speed, area, volume, and data size — all in one place.</p>
+  </div>
+
+  <div class="cat-scroll" id="cat-bar"></div>
+
+  <div class="converter-card">
+    <div class="conv-header">
+      <span class="conv-icon" id="conv-icon">📏</span>
+      <span class="conv-title" id="conv-title">Length</span>
+    </div>
+    <div class="input-row">
+      <input type="number" class="inp-number" id="inp-val" value="1" oninput="convert()"/>
+      <select class="from-select" id="from-unit" onchange="convert()"></select>
+      <div class="swap-btn" onclick="swapUnits()" title="Swap">⇄</div>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const CATEGORIES = {
+  length: {
+    icon:'📏', label:'Length',
+    units:{
+      m:'Meters', km:'Kilometers', cm:'Centimeters', mm:'Millimeters',
+      mi:'Miles', yd:'Yards', ft:'Feet', in:'Inches', nm:'Nautical Miles'
+    },
+    toBase:{ m:1, km:1000, cm:0.01, mm:0.001, mi:1609.344, yd:0.9144, ft:0.3048, in:0.0254, nm:1852 }
+  },
+  weight: {
+    icon:'⚖️', label:'Weight / Mass',
+    units:{ kg:'Kilograms', g:'Grams', mg:'Milligrams', lb:'Pounds', oz:'Ounces', t:'Metric Tons', st:'Stone' },
+    toBase:{ kg:1, g:0.001, mg:0.000001, lb:0.453592, oz:0.0283495, t:1000, st:6.35029 }
+  },
+  temperature: {
+    icon:'🌡️', label:'Temperature',
+    units:{ C:'Celsius', F:'Fahrenheit', K:'Kelvin', R:'Rankine' },
+    special: true
+  },
+  speed: {
+    icon:'⚡', label:'Speed',
+    units:{ 'km/h':'km/h', 'mph':'mph', 'm/s':'m/s', knot:'Knots', 'ft/s':'ft/s', mach:'Mach' },
+    toBase:{ 'km/h':1, 'mph':1.60934, 'm/s':3.6, knot:1.852, 'ft/s':1.09728, mach:1234.8 }
+  },
+  area: {
+    icon:'📐', label:'Area',
+    units:{ m2:'m²', km2:'km²', cm2:'cm²', ha:'Hectares', ac:'Acres', ft2:'ft²', in2:'in²', mi2:'mi²' },
+    toBase:{ m2:1, km2:1e6, cm2:1e-4, ha:10000, ac:4046.86, ft2:0.092903, in2:0.00064516, mi2:2589988 }
+  },
+  volume: {
+    icon:'🧪', label:'Volume',
+    units:{ L:'Liters', mL:'Milliliters', m3:'m³', ft3:'ft³', gal:'US Gallons', qt:'Quarts', pt:'Pints', cup:'Cups', floz:'Fl. Oz', tsp:'Teaspoons', tbsp:'Tablespoons' },
+    toBase:{ L:1, mL:0.001, m3:1000, ft3:28.3168, gal:3.78541, qt:0.946353, pt:0.473176, cup:0.236588, floz:0.0295735, tsp:0.00492892, tbsp:0.0147868 }
+  },
+  data: {
+    icon:'💾', label:'Data Size',
+    units:{ B:'Bytes', KB:'Kilobytes', MB:'Megabytes', GB:'Gigabytes', TB:'Terabytes', Kib:'Kibibytes', Mib:'Mebibytes', Gib:'Gibibytes', Tib:'Tebibytes', bit:'Bits' },
+    toBase:{ B:1, KB:1000, MB:1e6, GB:1e9, TB:1e12, Kib:1024, Mib:1048576, Gib:1073741824, Tib:1.0995e12, bit:0.125 }
+  },
+  pressure: {
+    icon:'🔩', label:'Pressure',
+    units:{ Pa:'Pascals', kPa:'Kilopascals', MPa:'Megapascals', bar:'Bar', atm:'Atmospheres', psi:'PSI', mmHg:'mmHg', inHg:'inHg' },
+    toBase:{ Pa:1, kPa:1000, MPa:1e6, bar:100000, atm:101325, psi:6894.76, mmHg:133.322, inHg:3386.39 }
+  },
+  energy: {
+    icon:'⚡', label:'Energy',
+    units:{ J:'Joules', kJ:'Kilojoules', cal:'Calories', kcal:'Kilocalories', Wh:'Watt-hours', kWh:'kWh', BTU:'BTU', eV:'Electron Volts' },
+    toBase:{ J:1, kJ:1000, cal:4.184, kcal:4184, Wh:3600, kWh:3600000, BTU:1055.06, eV:1.60218e-19 }
+  }
+};
+
+let currentCat = 'length';
+
+// Build category bar
+const catBar = document.getElementById('cat-bar');
+Object.entries(CATEGORIES).forEach(([key, cat]) => {
+  const pill = document.createElement('button');
+  pill.className = 'cat-pill' + (key === currentCat ? ' active' : '');
+  pill.innerHTML = `${cat.icon} ${cat.label}`;
+  pill.onclick = () => selectCat(key);
+  catBar.appendChild(pill);
+});
+
+function selectCat(key) {
+  currentCat = key;
+  document.querySelectorAll('.cat-pill').forEach((p,i) => p.classList.toggle('active', Object.keys(CATEGORIES)[i] === key));
+  const cat = CATEGORIES[key];
+  document.getElementById('conv-icon').textContent = cat.icon;
+  document.getElementById('conv-title').textContent = cat.label;
+  // Rebuild select
+  const sel = document.getElementById('from-unit');
+  sel.innerHTML = Object.entries(cat.units).map(([k,v]) => `<option value="${k}">${v} (${k})</option>`).join('');
+  convert();
+}
+
+function convertTemp(val, from) {
+  const toCelsius = { C: v => v, F: v => (v-32)*5/9, K: v => v-273.15, R: v => (v-491.67)*5/9 };
+  const fromCelsius = { C: v => v, F: v => v*9/5+32, K: v => v+273.15, R: v => (v+273.15)*9/5 };
+  const inC = toCelsius[from](val);
+  return Object.fromEntries(Object.keys(CATEGORIES.temperature.units).map(u => [u, fromCelsius[u](inC)]));
+}
+
+function fmt(n) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs === 0) return '0';
+  if (abs >= 1e12) return (n/1e12).toPrecision(6) + ' × 10¹²';
+  if (abs >= 1e9)  return (n/1e9).toPrecision(6) + 'B';
+  if (abs < 1e-6 && abs > 0) return n.toExponential(6);
+  if (abs < 0.001) return n.toPrecision(6);
+  const s = parseFloat(n.toPrecision(10)).toString();
+  return s.length > 12 ? n.toExponential(5) : s;
+}
+
+function convert() {
+  const val = parseFloat(document.getElementById('inp-val').value);
+  const from = document.getElementById('from-unit').value;
+  const cat = CATEGORIES[currentCat];
+  const grid = document.getElementById('results-grid');
+
+  if (isNaN(val)) { grid.innerHTML = '<div style="padding:1.5rem;color:var(--muted)">Enter a value above</div>'; return; }
+
+  let results = {};
+  if (cat.special) {
+    results = convertTemp(val, from);
+  } else {
+    const baseVal = val * cat.toBase[from];
+    Object.keys(cat.units).forEach(u => { results[u] = baseVal / cat.toBase[u]; });
+  }
+
+  grid.innerHTML = Object.entries(results).map(([unit, rval]) => `
+    <div class="result-item" onclick="copyResult('${fmt(rval)} ${unit}')">
+      <div class="r-unit">${cat.units[unit]}</div>
+      <div class="r-val${unit===from?' highlight':''}">${fmt(rval)} <small style="color:var(--muted);font-size:0.75rem">${unit}</small></div>
+      <div class="r-copy-hint">click to copy</div>
+    </div>`).join('');
+}
+
+function swapUnits() {
+  // No "to unit" in this design — just regenerate
+  convert();
+}
+
+function copyResult(text) {
+  navigator.clipboard.writeText(text).then(() => showToast(`Copied: ${text}`));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+selectCat('length');
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Base64 Encode & Decode Online — Text & File | HexHelp AI</title>
+  <meta name="description" content="Free Base64 encoder and decoder. Encode text, URLs or file content to Base64. Supports standard and URL-safe Base64. Live two-way conversion." />
+  <meta name="keywords" content="base64 encoder, base64 decoder, encode base64, decode base64, base64 online, base64 string, base64 file, URL safe base64" />
+  <meta name="author" content="HexHelp AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hexhelpai.com/tools/base64.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hexhelpai.com/tools/base64.html" />
+  <meta property="og:title" content="Base64 Encode & Decode Online — Text & File | HexHelp AI" />
+  <meta property="og:description" content="Free Base64 encoder and decoder. Encode text, URLs or file content to Base64. Supports standard and URL-safe Base64. Live two-way conversion." />
+  <meta property="og:image" content="https://hexhelpai.com/assets/og-image.png" />
+  <meta property="og:site_name" content="HexHelp AI" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Base64 Encode & Decode Online — Text & File | HexHelp AI" />
+  <meta name="twitter:description" content="Free Base64 encoder and decoder. Encode text, URLs or file content to Base64. Supports standard and URL-safe Base64. Live two-way conversion." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--pink:#ec4899}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(99,102,241,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(99,102,241,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(236,72,153,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--pink) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Mode toggle */
+    .mode-toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;gap:4px;margin:0 auto 2rem;width:fit-content}
+    .mode-btn{padding:8px 24px;border-radius:9px;border:none;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;color:var(--muted);background:transparent}
+    .mode-btn.active{background:var(--accent);color:#fff;box-shadow:0 2px 12px rgba(99,102,241,0.35)}
+
+    /* Two-panel layout */
+    .panels{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:stretch;background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .panel{display:flex;flex-direction:column}
+    .panel-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
+    .panel-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
+    .panel-title.left{color:var(--accent3)}
+    .panel-title.right{color:var(--green)}
+    .panel-actions{display:flex;gap:0.5rem}
+    textarea{flex:1;background:var(--bg2);border:none;border-right:1px solid var(--border);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.85rem;padding:1.25rem;resize:none;outline:none;min-height:280px;line-height:1.6}
+    .panel:last-child textarea{border-right:none;border-left:1px solid var(--border)}
+    textarea::placeholder{color:var(--muted)}
+
+    /* Middle arrow */
+    .panel-divider{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 0.5rem;background:var(--bg2);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+    .arrow-circle{width:40px;height:40px;border-radius:50%;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all 0.2s}
+    .arrow-circle:hover{background:rgba(99,102,241,0.3);border-color:var(--accent)}
+
+    /* Action bar */
+    .action-bar{display:flex;gap:0.75rem;justify-content:center;margin-top:1.25rem;flex-wrap:wrap}
+    .btn{border:none;border-radius:10px;padding:10px 22px;font-size:0.875rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+    .btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--muted)}
+    .btn-secondary:hover{border-color:var(--accent);color:var(--accent2)}
+    .btn-green{background:rgba(34,211,165,0.15);border:1px solid rgba(34,211,165,0.3);color:var(--green)}
+    .btn-green:hover{background:rgba(34,211,165,0.25)}
+
+    /* Info row */
+    .info-row{display:flex;gap:1rem;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+    .info-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:0.78rem;color:var(--muted)}
+    .info-pill span{color:var(--text);font-weight:600}
+
+    /* File upload */
+    .file-zone{border:2px dashed var(--border);border-radius:12px;padding:1.5rem;text-align:center;margin-top:1.25rem;cursor:pointer;transition:all 0.2s;color:var(--muted);font-size:0.875rem}
+    .file-zone:hover{border-color:var(--accent);color:var(--accent3)}
+    .file-zone.dragover{border-color:var(--accent);background:rgba(99,102,241,0.06)}
+    .error-msg{color:#fca5a5;font-size:0.85rem;text-align:center;margin-top:0.75rem;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:0.75rem;display:none}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:700px){.panels{grid-template-columns:1fr}.panel-divider{flex-direction:row;padding:0.5rem;border-left:none;border-right:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.panel:last-child textarea{border-left:none;border-top:1px solid var(--border)}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">🔐</div>
+    <h1 class="page-title">Base64 <span class="gradient">Encode / Decode</span></h1>
+    <p class="page-sub">Instantly encode or decode Base64. Supports plain text, URLs, and file content.</p>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="mode-encode" onclick="setMode('encode')">Encode →</button>
+    <button class="mode-btn" id="mode-decode" onclick="setMode('decode')">← Decode</button>
+    <button class="mode-btn" id="mode-url" onclick="setMode('url')">URL-safe</button>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title left" id="left-label">Plain Text</span>
+        <div class="panel-actions">
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem" onclick="clearAll()">Clear</button>
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem" onclick="pasteLeft()">Paste</button>
+        </div>
+      </div>
+      <textarea id="input-text" placeholder="Type or paste text here…" oninput="liveConvert()"></textarea>
+    </div>
+
+    <div class="panel-divider">
+      <div class="arrow-circle" onclick="swapPanels()" title="Swap">⇄</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title right" id="right-label">Base64 Output</span>
+        <div class="panel-actions">
+          <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.72rem" onclick="copyOutput()">Copy</button>
+        </div>
+      </div>
+      <textarea id="output-text" placeholder="Result appears here…" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="info-row">
+    <div class="info-pill">Input: <span id="info-in">0</span> chars</div>
+    <div class="info-pill">Output: <span id="info-out">0</span> chars</div>
+    <div class="info-pill">Ratio: <span id="info-ratio">—</span></div>
+  </div>
+
+  <div class="action-bar">
+    <button class="btn btn-primary" onclick="convert()">Convert</button>
+    <button class="btn btn-green" onclick="copyOutput()">📋 Copy Output</button>
+    <button class="btn btn-secondary" onclick="downloadOutput()">⬇ Download</button>
+    <button class="btn btn-secondary" onclick="clearAll()">✕ Clear</button>
+  </div>
+
+  <div class="file-zone" id="file-zone" onclick="document.getElementById('file-input').click()">
+    📎 Drop a file here or click to upload — content will be encoded/decoded
+    <input type="file" id="file-input" style="display:none" onchange="handleFile(event)"/>
+  </div>
+  <div class="error-msg" id="error-msg"></div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  let currentMode = 'encode';
+
+  const fileZone = document.getElementById('file-zone');
+  fileZone.addEventListener('dragover', e => { e.preventDefault(); fileZone.classList.add('dragover'); });
+  fileZone.addEventListener('dragleave', () => fileZone.classList.remove('dragover'));
+  fileZone.addEventListener('drop', e => {
+    e.preventDefault(); fileZone.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+  });
+
+  function processFile(file) {
+    const reader = new FileReader();
+    if (currentMode === 'encode') {
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => {
+        const bytes = new Uint8Array(reader.result);
+        let binary = '';
+        bytes.forEach(b => binary += String.fromCharCode(b));
+        document.getElementById('input-text').value = `[File: ${file.name}]`;
+        const b64 = btoa(binary);
+        document.getElementById('output-text').value = currentMode === 'url' ? b64.replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'') : b64;
+        updateInfo();
+      };
+    } else {
+      reader.readAsText(file);
+      reader.onload = () => { document.getElementById('input-text').value = reader.result; liveConvert(); };
+    }
+  }
+
+  function handleFile(e) { if (e.target.files[0]) processFile(e.target.files[0]); }
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('mode-encode').classList.toggle('active', mode === 'encode');
+    document.getElementById('mode-decode').classList.toggle('active', mode === 'decode');
+    document.getElementById('mode-url').classList.toggle('active', mode === 'url');
+    if (mode === 'decode') {
+      document.getElementById('left-label').textContent = 'Base64 Input';
+      document.getElementById('right-label').textContent = 'Decoded Text';
+    } else {
+      document.getElementById('left-label').textContent = 'Plain Text';
+      document.getElementById('right-label').textContent = 'Base64 Output';
+    }
+    liveConvert();
+  }
+
+  function liveConvert() { convert(true); }
+
+  function convert(silent) {
+    const inp = document.getElementById('input-text').value;
+    const errEl = document.getElementById('error-msg');
+    errEl.style.display = 'none';
+    let result = '';
+    try {
+      if (currentMode === 'encode') {
+        result = btoa(unescape(encodeURIComponent(inp)));
+      } else if (currentMode === 'url') {
+        result = btoa(unescape(encodeURIComponent(inp))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+      } else {
+        // decode — handle url-safe chars
+        const normalized = inp.replace(/-/g,'+').replace(/_/g,'/');
+        const padded = normalized + '=='.slice((2 - normalized.length % 4) % 4);
+        result = decodeURIComponent(escape(atob(padded)));
+      }
+      document.getElementById('output-text').value = result;
+      updateInfo(inp, result);
+      if (!silent) showToast('Converted!');
+    } catch(e) {
+      errEl.textContent = `❌ ${currentMode === 'decode' ? 'Invalid Base64 input' : 'Encoding error'}: ${e.message}`;
+      errEl.style.display = 'block';
+    }
+  }
+
+  function updateInfo(inp, out) {
+    inp = inp ?? document.getElementById('input-text').value;
+    out = out ?? document.getElementById('output-text').value;
+    document.getElementById('info-in').textContent = inp.length.toLocaleString();
+    document.getElementById('info-out').textContent = out.length.toLocaleString();
+    document.getElementById('info-ratio').textContent = inp.length ? `${((out.length/inp.length)*100).toFixed(0)}%` : '—';
+  }
+
+  function swapPanels() {
+    const a = document.getElementById('input-text').value;
+    const b = document.getElementById('output-text').value;
+    document.getElementById('input-text').value = b;
+    setMode(currentMode === 'decode' ? 'encode' : 'decode');
+    liveConvert();
+  }
+
+  function clearAll() {
+    document.getElementById('input-text').value = '';
+    document.getElementById('output-text').value = '';
+    updateInfo('','');
+  }
+
+  async function pasteLeft() {
+    try { document.getElementById('input-text').value = await navigator.clipboard.readText(); liveConvert(); } catch {}
+  }
+
+  function copyOutput() {
+    const val = document.getElementById('output-text').value;
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(() => showToast('Output copied!'));
+  }
+
+  function downloadOutput() {
+    const val = document.getElementById('output-text').value;
+    if (!val) return;
+    const blob = new Blob([val], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `hexhelp-base64-${currentMode}.txt`;
+    a.click();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>

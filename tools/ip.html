@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>IP Address Lookup — Check Your Public IPv4 & IPv6 | HexHelp AI</title>
+  <meta name="description" content="Find your public IP address instantly. Shows IPv4, IPv6, browser info, user agent, geolocation, ISP, ASN and timezone. Free, no signup needed." />
+  <meta name="keywords" content="what is my IP address, my public IP, IP lookup, IPv4, IPv6, user agent, geolocation, ISP lookup, check IP address online" />
+  <meta name="author" content="HexHelp AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hexhelpai.com/tools/ip.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hexhelpai.com/tools/ip.html" />
+  <meta property="og:title" content="IP Address Lookup — Check Your Public IPv4 & IPv6 | HexHelp AI" />
+  <meta property="og:description" content="Find your public IP address instantly. Shows IPv4, IPv6, browser info, user agent, geolocation, ISP, ASN and timezone. Free, no signup needed." />
+  <meta property="og:image" content="https://hexhelpai.com/assets/og-image.png" />
+  <meta property="og:site_name" content="HexHelp AI" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="IP Address Lookup — Check Your Public IPv4 & IPv6 | HexHelp AI" />
+  <meta name="twitter:description" content="Find your public IP address instantly. Shows IPv4, IPv6, browser info, user agent, geolocation, ISP, ASN and timezone. Free, no signup needed." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0b0f;
+      --bg2: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #1f2235;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(99,102,241,0.4);
+      --text: #e8eaf0;
+      --muted: #7c7f96;
+      --accent: #6366f1;
+      --accent2: #818cf8;
+      --accent3: #a5b4fc;
+      --green: #22d3a5;
+      --orange: #f97316;
+      --pink: #ec4899;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 64px;
+      background: rgba(10,11,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; font-weight: 700; font-size: 1.1rem; color: var(--text);
+    }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+    .nav-logo .hex { color: var(--accent2); }
+
+    .nav-back {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted); text-decoration: none;
+      font-size: 0.875rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text); }
+
+    /* MAIN */
+    main {
+      position: relative; z-index: 1;
+      max-width: 860px; margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+    }
+
+    .page-header { text-align: center; margin-bottom: 3.5rem; }
+
+    .page-icon {
+      width: 72px; height: 72px; border-radius: 18px;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.25);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin-bottom: 1.5rem;
+      box-shadow: 0 0 40px rgba(99,102,241,0.2);
+    }
+
+    .page-title {
+      font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+    }
+
+    .page-title .gradient {
+      background: linear-gradient(135deg, var(--accent2) 0%, var(--green) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .page-sub {
+      color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 500px; margin: 0 auto;
+    }
+
+    /* HERO IP CARD */
+    .ip-hero {
+      background: linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(34,211,165,0.08) 100%);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 20px;
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ip-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%);
+      pointer-events: none;
+    }
+
+    .ip-label {
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--accent3); margin-bottom: 0.75rem;
+    }
+
+    .ip-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      min-height: 1.2em;
+    }
+
+    .ip-value.loading {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+      color: transparent;
+      width: 280px;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .copy-btn:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(99,102,241,0.3); }
+    .copy-btn:active { transform: scale(0.97); }
+    .copy-btn.copied { background: var(--green); }
+
+    /* INFO GRID */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .info-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 20px rgba(99,102,241,0.08);
+    }
+
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-row:first-child { padding-top: 0; }
+
+    .info-key {
+      font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--muted); white-space: nowrap;
+      padding-top: 2px; min-width: 120px;
+    }
+
+    .info-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text);
+      word-break: break-all;
+      text-align: right;
+      flex: 1;
+    }
+
+    .info-val.loading-cell {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      color: transparent;
+      height: 1em;
+    }
+
+    .row-copy {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .row-copy:hover { border-color: var(--accent); color: var(--accent2); }
+    .row-copy.copied { border-color: var(--green); color: var(--green); }
+
+    /* UA CARD */
+    .ua-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .ua-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .ua-title {
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--accent3);
+    }
+
+    .ua-string {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--text);
+      line-height: 1.7;
+      word-break: break-all;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    /* GEO */
+    .geo-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .geo-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .geo-title {
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--orange);
+    }
+
+    .geo-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem;
+    }
+
+    .geo-item {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem;
+    }
+
+    .geo-item-label {
+      font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); margin-bottom: 0.4rem; font-weight: 600;
+    }
+
+    .geo-item-val {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text);
+      font-weight: 600;
+    }
+
+    .geo-item-val.loading-cell {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 4px;
+      color: transparent;
+      height: 1.2em;
+    }
+
+    /* REFRESH */
+    .refresh-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); border-radius: 8px; padding: 8px 16px;
+      font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; font-family: 'Inter', sans-serif;
+      margin: 0 auto;
+    }
+    .refresh-btn:hover { border-color: var(--accent); color: var(--accent2); }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--green); color: #0a0f0a;
+      padding: 10px 24px; border-radius: 100px;
+      font-size: 0.875rem; font-weight: 700;
+      opacity: 0; transition: opacity 0.2s, transform 0.2s; pointer-events: none; z-index: 1000;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    @media (max-width: 600px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .ip-value { font-size: 2rem; }
+      .geo-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="/assets/logo.svg" alt="HexHelp Logo" />
+      <span><span class="hex">Hex</span>Help AI</span>
+    </a>
+    <a href="/" class="nav-back">← All Tools</a>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+    <div class="page-header">
+      <div class="page-icon">🌐</div>
+      <h1 class="page-title">IP Address <span class="gradient">Inspector</span></h1>
+      <p class="page-sub">Your current network identity — IP, location, browser details. All in one place.</p>
+    </div>
+
+    <!-- HERO IP -->
+    <div class="ip-hero">
+      <div class="ip-label">Your Public IPv4 Address</div>
+      <div class="ip-value loading" id="hero-ip">000.000.000.000</div>
+      <div style="display:flex;gap:0.75rem;justify-content:center;align-items:center;flex-wrap:wrap;">
+        <button class="copy-btn" id="copy-ip-btn" onclick="copyHeroIP()">
+          <span>📋</span> Copy IPv4
+        </button>
+        <button class="copy-btn" id="copy-ip6-btn" onclick="copyHeroIP6()" style="background:var(--surface2);border:1px solid var(--border-hover);">
+          <span>📋</span> Copy IPv6
+        </button>
+      </div>
+      <div id="ipv6-row" style="margin-top:1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--muted);word-break:break-all;">
+        IPv6: <span id="hero-ip6" style="color:var(--accent3);">detecting…</span>
+      </div>
+    </div>
+
+    <!-- BROWSER INFO -->
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-key">Browser</span>
+          <span class="info-val" id="val-browser">—</span>
+          <button class="row-copy" onclick="copyField('val-browser', this)">copy</button>
+        </div>
+        <div class="info-row">
+          <span class="info-key">OS</span>
+          <span class="info-val" id="val-os">—</span>
+          <button class="row-copy" onclick="copyField('val-os', this)">copy</button>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Device</span>
+          <span class="info-val" id="val-device">—</span>
+          <button class="row-copy" onclick="copyField('val-device', this)">copy</button>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Language</span>
+          <span class="info-val" id="val-lang">—</span>
+          <button class="row-copy" onclick="copyField('val-lang', this)">copy</button>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-row">
+          <span class="info-key">Screen</span>
+          <span class="info-val" id="val-screen">—</span>
+          <button class="row-copy" onclick="copyField('val-screen', this)">copy</button>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Viewport</span>
+          <span class="info-val" id="val-viewport">—</span>
+          <button class="row-copy" onclick="copyField('val-viewport', this)">copy</button>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Timezone</span>
+          <span class="info-val" id="val-tz">—</span>
+          <button class="row-copy" onclick="copyField('val-tz', this)">copy</button>
+        </div>
+        <div class="info-row">
+          <span class="info-key">Connection</span>
+          <span class="info-val" id="val-conn">—</span>
+          <button class="row-copy" onclick="copyField('val-conn', this)">copy</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER AGENT -->
+    <div class="ua-card">
+      <div class="ua-header">
+        <div class="ua-title">🖥️ Full User Agent String</div>
+        <button class="row-copy" onclick="copyField('ua-string', this)">copy</button>
+      </div>
+      <div class="ua-string" id="ua-string">Loading...</div>
+    </div>
+
+    <!-- GEO INFO -->
+    <div class="geo-section">
+      <div class="geo-header">
+        <div class="geo-title">📍 Geo Location (IP-based)</div>
+        <button class="row-copy" onclick="copyGeo()">copy all</button>
+      </div>
+      <div class="geo-grid">
+        <div class="geo-item">
+          <div class="geo-item-label">Country</div>
+          <div class="geo-item-val loading-cell" id="geo-country">—</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-item-label">Region</div>
+          <div class="geo-item-val loading-cell" id="geo-region">—</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-item-label">City</div>
+          <div class="geo-item-val loading-cell" id="geo-city">—</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-item-label">ISP / Org</div>
+          <div class="geo-item-val loading-cell" id="geo-isp">—</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-item-label">ASN</div>
+          <div class="geo-item-val loading-cell" id="geo-asn">—</div>
+        </div>
+        <div class="geo-item">
+          <div class="geo-item-label">Timezone</div>
+          <div class="geo-item-val loading-cell" id="geo-tz">—</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="refresh-btn" onclick="location.reload()">↺ Refresh All Data</button>
+  </main>
+
+  <div class="toast" id="toast">✓ Copied!</div>
+
+  <script>
+    // ── BROWSER DETECTION ──
+    const ua = navigator.userAgent;
+
+    function getBrowser(ua) {
+      if (/Edg\//.test(ua)) return 'Microsoft Edge';
+      if (/OPR\/|Opera\//.test(ua)) return 'Opera';
+      if (/Firefox\//.test(ua)) return 'Firefox ' + ua.match(/Firefox\/([\d.]+)/)?.[1];
+      if (/Chrome\//.test(ua)) return 'Chrome ' + ua.match(/Chrome\/([\d.]+)/)?.[1];
+      if (/Safari\//.test(ua) && /Version\//.test(ua)) return 'Safari ' + ua.match(/Version\/([\d.]+)/)?.[1];
+      return 'Unknown';
+    }
+
+    function getOS(ua) {
+      if (/Windows NT 10/.test(ua)) return 'Windows 10/11';
+      if (/Windows NT/.test(ua)) return 'Windows';
+      if (/Mac OS X ([\d_]+)/.test(ua)) return 'macOS ' + ua.match(/Mac OS X ([\d_]+)/)[1].replace(/_/g, '.');
+      if (/Android ([\d.]+)/.test(ua)) return 'Android ' + ua.match(/Android ([\d.]+)/)[1];
+      if (/iPhone OS ([\d_]+)/.test(ua)) return 'iOS ' + ua.match(/iPhone OS ([\d_]+)/)[1].replace(/_/g, '.');
+      if (/Linux/.test(ua)) return 'Linux';
+      return 'Unknown';
+    }
+
+    function getDevice(ua) {
+      if (/iPhone/.test(ua)) return 'iPhone';
+      if (/iPad/.test(ua)) return 'iPad';
+      if (/Android/.test(ua) && /Mobile/.test(ua)) return 'Android Phone';
+      if (/Android/.test(ua)) return 'Android Tablet';
+      return 'Desktop / Laptop';
+    }
+
+    function getConnection() {
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (!conn) return 'Unknown';
+      const parts = [];
+      if (conn.effectiveType) parts.push(conn.effectiveType.toUpperCase());
+      if (conn.downlink) parts.push(conn.downlink + ' Mbps');
+      return parts.join(' · ') || 'Unknown';
+    }
+
+    // ── FILL BROWSER INFO ──
+    document.getElementById('val-browser').textContent = getBrowser(ua);
+    document.getElementById('val-os').textContent = getOS(ua);
+    document.getElementById('val-device').textContent = getDevice(ua);
+    document.getElementById('val-lang').textContent = navigator.language || 'Unknown';
+    document.getElementById('val-screen').textContent = `${screen.width} × ${screen.height} (${screen.colorDepth}-bit)`;
+    document.getElementById('val-viewport').textContent = `${window.innerWidth} × ${window.innerHeight}`;
+    document.getElementById('val-tz').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById('val-conn').textContent = getConnection();
+    document.getElementById('ua-string').textContent = ua;
+
+    // ── FETCH IP + GEO ──
+    // Store IPs globally for copy
+    let _ipv4 = '', _ipv6 = '';
+
+    async function fetchIP() {
+      // 1. Force IPv4 via api4.ipify.org (A-record only endpoint)
+      try {
+        const r4 = await fetch('https://api4.ipify.org?format=json');
+        const d4 = await r4.json();
+        _ipv4 = d4.ip || '';
+        const heroEl = document.getElementById('hero-ip');
+        heroEl.textContent = _ipv4 || '—';
+        heroEl.classList.remove('loading');
+      } catch (e) {
+        document.getElementById('hero-ip').textContent = 'Unavailable';
+        document.getElementById('hero-ip').classList.remove('loading');
+      }
+
+      // 2. Try IPv6 via api6.ipify.org (AAAA-record only endpoint)
+      try {
+        const r6 = await fetch('https://api6.ipify.org?format=json');
+        const d6 = await r6.json();
+        _ipv6 = d6.ip || '';
+        document.getElementById('hero-ip6').textContent = _ipv6 || 'Not available';
+      } catch (e) {
+        document.getElementById('hero-ip6').textContent = 'Not available';
+        document.getElementById('copy-ip6-btn').style.display = 'none';
+      }
+
+      // 3. Geo lookup using forced-IPv4 endpoint
+      try {
+        const geoUrl = _ipv4
+          ? `https://ipapi.co/${_ipv4}/json/`
+          : 'https://ipapi.co/json/';
+        const res = await fetch(geoUrl);
+        const data = await res.json();
+        setGeo('geo-country', (data.country_flag_emoji || '') + ' ' + (data.country_name || '—'));
+        setGeo('geo-region', data.region || '—');
+        setGeo('geo-city', data.city || '—');
+        setGeo('geo-isp', data.org || '—');
+        setGeo('geo-asn', data.asn || '—');
+        setGeo('geo-tz', data.timezone || '—');
+      } catch (e) {
+        ['geo-country','geo-region','geo-city','geo-isp','geo-asn','geo-tz']
+          .forEach(id => setGeo(id, 'Unavailable'));
+      }
+    }
+
+    function setGeo(id, val) {
+      const el = document.getElementById(id);
+      el.textContent = val;
+      el.classList.remove('loading-cell');
+    }
+
+    fetchIP();
+
+    // ── COPY FUNCTIONS ──
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg || '✓ Copied!';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    function copyHeroIP() {
+      if (!_ipv4) return;
+      navigator.clipboard.writeText(_ipv4).then(() => {
+        const btn = document.getElementById('copy-ip-btn');
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        showToast('IPv4 address copied!');
+        setTimeout(() => { btn.innerHTML = '<span>📋</span> Copy IPv4'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    function copyHeroIP6() {
+      if (!_ipv6) return;
+      navigator.clipboard.writeText(_ipv6).then(() => {
+        const btn = document.getElementById('copy-ip6-btn');
+        btn.textContent = '✓ Copied!';
+        btn.classList.add('copied');
+        showToast('IPv6 address copied!');
+        setTimeout(() => { btn.innerHTML = '<span>📋</span> Copy IPv6'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+
+    function copyField(id, btn) {
+      const val = document.getElementById(id).textContent;
+      if (!val || val === '—' || val === 'Loading...') return;
+      navigator.clipboard.writeText(val).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = '✓';
+        btn.classList.add('copied');
+        showToast('Copied!');
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.classList.remove('copied');
+        }, 1800);
+      });
+    }
+
+    function copyGeo() {
+      const fields = [
+        ['Country', 'geo-country'], ['Region', 'geo-region'], ['City', 'geo-city'],
+        ['ISP', 'geo-isp'], ['ASN', 'geo-asn'], ['Timezone', 'geo-tz']
+      ];
+      const text = fields.map(([k, id]) => `${k}: ${document.getElementById(id).textContent}`).join('\n');
+      navigator.clipboard.writeText(text).then(() => showToast('Geo data copied!'));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HexHelp AI — Free Online Developer Tools | IP Lookup, DNS, QR Code & More</title>
+  <meta name="description" content="HexHelp AI is a free online toolbox for developers and everyday users. IP address lookup, DNS checker, WHOIS, QR code generator, unit converter, color picker, hash generator, JSON formatter, Base64, password generator and more. No signup required." />
+  <meta name="keywords" content="free online tools, developer tools, IP address lookup, DNS lookup, WHOIS lookup, QR code generator, unit converter, color picker, hash generator, JSON formatter, Base64 encoder, password generator, URL encoder, Unix timestamp converter, hex color converter, network tools" />
+  <meta name="author" content="HexHelp AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hexhelpai.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hexhelpai.com/" />
+  <meta property="og:title" content="HexHelp AI — Free Online Developer Tools" />
+  <meta property="og:description" content="Free online toolbox: IP lookup, DNS, WHOIS, QR code generator, unit converter, color picker, hash generator, JSON formatter, Base64 & more. No signup needed." />
+  <meta property="og:image" content="https://hexhelpai.com/assets/og-image.png" />
+  <meta property="og:site_name" content="HexHelp AI" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="HexHelp AI — Free Online Developer Tools" />
+  <meta name="twitter:description" content="IP lookup, DNS, QR codes, unit converter, color picker, hash generator & more. Free, no signup, privacy-first." />
+  <meta name="twitter:image" content="https://hexhelpai.com/assets/og-image.png" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "HexHelp AI",
+    "url": "https://hexhelpai.com",
+    "description": "Free online developer tools: IP lookup, DNS, QR code, unit converter, color picker, hash generator and more.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://hexhelpai.com/#tools",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "HexHelp AI",
+    "url": "https://hexhelpai.com",
+    "logo": "https://hexhelpai.com/assets/logo.svg",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "lpthmail@gmail.com",
+      "contactType": "customer support"
+    }
+  }
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0b0f;
+      --bg2: #0f1117;
+      --bg3: #161820;
+      --surface: #1a1d27;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(99,102,241,0.5);
+      --text: #e8eaf0;
+      --muted: #7c7f96;
+      --accent: #6366f1;
+      --accent2: #818cf8;
+      --accent3: #a5b4fc;
+      --green: #22d3a5;
+      --orange: #f97316;
+      --pink: #ec4899;
+      --glow: 0 0 40px rgba(99,102,241,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 64px;
+      background: rgba(10,11,15,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 1.1rem; color: var(--text); }
+    .nav-logo img { width: 36px; height: 36px; border-radius: 8px; }
+    .nav-logo .hex { color: var(--accent2); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-badge {
+      background: linear-gradient(135deg, var(--accent), var(--pink));
+      color: #fff; font-size: 0.75rem; font-weight: 700;
+      padding: 4px 12px; border-radius: 100px; letter-spacing: 0.05em;
+      text-decoration: none; transition: opacity 0.2s;
+    }
+    .nav-badge:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 7rem 2rem 5rem; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 600px;
+      background: radial-gradient(ellipse, rgba(99,102,241,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 100px; padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+      color: var(--accent3); margin-bottom: 2rem; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .hero-badge span { font-size: 1rem; }
+    h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; max-width: 800px; }
+    h1 .gradient {
+      background: linear-gradient(135deg, var(--accent2) 0%, var(--accent3) 40%, var(--green) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 560px; line-height: 1.7; margin-bottom: 3rem; }
+    .hero-logo {
+      width: 120px; height: 120px; border-radius: 24px; border: 1px solid var(--border);
+      background: var(--surface); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 0 60px rgba(99,102,241,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .hero-logo img { width: 90px; height: 90px; }
+
+    /* ── STATS ── */
+    .stats-bar {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; gap: 3rem; padding: 2.5rem 2rem;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--bg2); margin-bottom: 4rem; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 2rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--accent2), var(--green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+    /* ── TOOLS SECTION ── */
+    .tools-section { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+    /* ── TABS ── */
+    .tabs-wrapper {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 5px; width: fit-content;
+      margin: 0 auto 2.5rem;
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: transparent; border: none; border-radius: 10px;
+      padding: 10px 22px; font-size: 0.9rem; font-weight: 700;
+      color: var(--muted); cursor: pointer; transition: all 0.25s;
+      font-family: 'Inter', sans-serif; white-space: nowrap;
+    }
+    .tab-btn .tab-count {
+      font-size: 0.72rem; background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 100px; padding: 1px 8px; color: var(--muted); font-weight: 600;
+    }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(99,102,241,0.08));
+      color: var(--text);
+      box-shadow: 0 2px 12px rgba(99,102,241,0.2);
+      border: 1px solid rgba(99,102,241,0.25);
+    }
+    .tab-btn.active .tab-count { background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.3); color: var(--accent3); }
+    .tab-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,0.04); }
+
+    /* ── TAB CONTENT ── */
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .tab-section-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 1.5rem; }
+
+    /* ── TOOL CARDS ── */
+    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
+    .tool-card {
+      position: relative; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.75rem; text-decoration: none; color: inherit;
+      display: flex; flex-direction: column; gap: 0.75rem;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      overflow: hidden; cursor: pointer;
+    }
+    .tool-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(99,102,241,0.05) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .tool-card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(99,102,241,0.1); }
+    .tool-card:hover::before { opacity: 1; }
+    .tool-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+    .icon-blue   { background: rgba(99,102,241,0.15); }
+    .icon-green  { background: rgba(34,211,165,0.15); }
+    .icon-orange { background: rgba(249,115,22,0.15); }
+    .icon-pink   { background: rgba(236,72,153,0.15); }
+    .icon-cyan   { background: rgba(6,182,212,0.15); }
+    .icon-yellow { background: rgba(250,204,21,0.15); }
+    .icon-purple { background: rgba(168,85,247,0.15); }
+    .icon-red    { background: rgba(239,68,68,0.15); }
+    .icon-teal   { background: rgba(20,184,166,0.15); }
+    .tool-name { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .tool-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+    .tool-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 0.75rem; }
+    .tool-tag { font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 100px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .tag-live { background: rgba(34,211,165,0.15); color: var(--green); }
+    .tool-arrow { color: var(--muted); font-size: 1.1rem; transition: transform 0.2s, color 0.2s; }
+    .tool-card:hover .tool-arrow { transform: translate(3px, -3px); color: var(--accent2); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1; text-align: center;
+      padding: 3rem 2rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem;
+    }
+    footer a { color: var(--accent3); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1rem; font-weight: 700; color: var(--text); }
+    .footer-logo img { width: 28px; height: 28px; border-radius: 6px; }
+
+    code { font-family: 'JetBrains Mono', monospace; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--surface); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .stats-bar { gap: 1.5rem; }
+      .tabs-wrapper { width: 100%; justify-content: center; }
+      .tab-btn { padding: 8px 14px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="/assets/logo.svg" alt="HexHelp Logo" />
+      <span><span class="hex">Hex</span>Help AI</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="mailto:lpthmail@gmail.com">Contact</a></li>
+    </ul>
+    <a href="mailto:lpthmail@gmail.com" class="nav-badge">💬 Feedback</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-logo">
+      <img src="/assets/logo.svg" alt="HexHelp Bulldog" />
+    </div>
+    <div class="hero-badge"><span>🔧</span> Developer Toolbox</div>
+    <h1>
+      Your <span class="gradient">AI-Powered</span><br/>Developer Utility Belt
+    </h1>
+    <p class="hero-sub">
+      Fast, sharp, no-fluff tools for developers. Inspect networks, generate code,
+      analyze data — all in one place. Built by Hex, for builders.
+    </p>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Live tools</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0ms</div>
+      <div class="stat-label">Setup required</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Privacy first</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">More coming</div>
+    </div>
+  </div>
+
+  <!-- TOOLS -->
+  <section class="tools-section" id="tools">
+
+    <!-- TABS -->
+    <div class="tabs-wrapper">
+      <button class="tab-btn active" id="tab-network" onclick="switchTab('network')">
+        🌐 Network Tools <span class="tab-count">3</span>
+      </button>
+      <button class="tab-btn" id="tab-other" onclick="switchTab('other')">
+        🔧 Other Tools <span class="tab-count">9</span>
+      </button>
+    </div>
+
+    <!-- NETWORK TOOLS TAB -->
+    <div class="tab-pane active" id="pane-network">
+      <div class="tab-section-label">— Network & Domain Utilities —</div>
+      <div class="tools-grid">
+
+        <a href="/tools/ip.html" class="tool-card">
+          <div class="tool-icon icon-blue">🌐</div>
+          <div class="tool-name">IP Address Inspector</div>
+          <div class="tool-desc">Instantly reveal your public IPv4 & IPv6, user agent, browser fingerprint, and network details. One-click copy for each value.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/dns.html" class="tool-card">
+          <div class="tool-icon icon-green">🔍</div>
+          <div class="tool-name">DNS Lookup</div>
+          <div class="tool-desc">Query A, AAAA, MX, TXT, CNAME, NS, SOA records for any domain. Powered by Cloudflare DNS-over-HTTPS.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/whois.html" class="tool-card">
+          <div class="tool-icon icon-orange">🏢</div>
+          <div class="tool-name">WHOIS / Domain Info</div>
+          <div class="tool-desc">Registration dates, registrar info, nameservers, and full RDAP data for any domain — no API key needed.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- OTHER TOOLS TAB -->
+    <div class="tab-pane" id="pane-other">
+      <div class="tab-section-label">— Everyday Utilities for Everyone —</div>
+      <div class="tools-grid">
+
+        <a href="/tools/qrcode.html" class="tool-card">
+          <div class="tool-icon icon-purple">📱</div>
+          <div class="tool-name">QR Code Generator</div>
+          <div class="tool-desc">Turn any URL, text, contact, or Wi-Fi details into a scannable QR code. Download as PNG instantly.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/units.html" class="tool-card">
+          <div class="tool-icon icon-teal">📐</div>
+          <div class="tool-name">Unit Converter</div>
+          <div class="tool-desc">Convert length, weight, temperature, speed, area, volume and data size — all categories in one place with live conversion.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/color.html" class="tool-card">
+          <div class="tool-icon icon-pink">🎨</div>
+          <div class="tool-name">Color Picker & Converter</div>
+          <div class="tool-desc">Pick colors visually and convert between HEX, RGB, HSL, and HSB instantly. Copy any format with one click.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/timestamp.html" class="tool-card">
+          <div class="tool-icon icon-cyan">🕐</div>
+          <div class="tool-name">Unix Timestamp Converter</div>
+          <div class="tool-desc">Convert Unix timestamps to human-readable dates and back. Shows local, UTC, and relative time. Live current timestamp.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/hash.html" class="tool-card">
+          <div class="tool-icon icon-red">🔒</div>
+          <div class="tool-name">Hash Generator</div>
+          <div class="tool-desc">Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text or file. All processing happens in your browser.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/url.html" class="tool-card">
+          <div class="tool-icon icon-yellow">🔗</div>
+          <div class="tool-name">URL Encoder / Decoder</div>
+          <div class="tool-desc">Encode or decode URLs and query strings. Supports full URL parsing — break down any URL into its components.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/base64.html" class="tool-card">
+          <div class="tool-icon icon-pink">🔐</div>
+          <div class="tool-name">Base64 Encode / Decode</div>
+          <div class="tool-desc">Instant Base64 encoding and decoding. Supports text, URLs, and file content with live two-way conversion.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/json.html" class="tool-card">
+          <div class="tool-icon icon-cyan">📋</div>
+          <div class="tool-name">JSON Formatter & Validator</div>
+          <div class="tool-desc">Prettify, minify, and validate JSON with syntax highlighting, error detection, and one-click copy.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/password.html" class="tool-card">
+          <div class="tool-icon icon-yellow">🔑</div>
+          <div class="tool-name">Password Generator</div>
+          <div class="tool-desc">Cryptographically secure passwords with customizable length, character sets, entropy meter, and bulk generation.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">
+      <img src="/assets/logo.svg" alt="logo" />
+      HexHelp AI
+    </div>
+    <p>Built with ⚡ by <strong>Hex</strong> · Running on <code>hexhelpai.com</code></p>
+    <p style="margin-top: 0.5rem; opacity: 0.6;">Free developer tools. No tracking. No nonsense.</p>
+  </footer>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      document.getElementById('pane-' + tab).classList.add('active');
+    }
+
+    // Preserve tab state via URL hash
+    const hash = location.hash.replace('#','');
+    if (hash === 'other') switchTab('other');
+  </script>
+
+</body>
+</html>

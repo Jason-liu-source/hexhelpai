@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--pink:#ec4899}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(236,72,153,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(236,72,153,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(236,72,153,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,#f472b6 0%,#a78bfa 50%,#60a5fa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Main layout */
+    .layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
+    @media(max-width:720px){.layout{grid-template-columns:1fr}}
+
+    /* Picker panel */
+    .picker-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .panel-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
+    .panel-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--pink)}
+    .panel-body{padding:1.5rem}
+    .big-picker-wrap{display:flex;justify-content:center;margin-bottom:1.5rem}
+    input[type=color].big-picker{width:100%;height:120px;border:2px solid var(--border);border-radius:14px;cursor:pointer;padding:0;background:none}
+    .preview-box{width:100%;height:80px;border-radius:12px;border:1px solid var(--border);margin-bottom:1.25rem;transition:background 0.1s;position:relative;display:flex;align-items:center;justify-content:center;gap:1rem}
+    .preview-text{font-size:0.85rem;font-weight:700;padding:4px 12px;border-radius:6px}
+
+    /* Manual hex input */
+    .hex-input-row{display:flex;gap:0.5rem;align-items:center;margin-bottom:1rem}
+    .hex-label{font-size:0.78rem;font-weight:600;color:var(--muted);min-width:30px}
+    .hex-inp{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:9px 12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.95rem;outline:none;transition:border-color 0.2s;text-transform:uppercase}
+    .hex-inp:focus{border-color:rgba(236,72,153,0.5)}
+
+    /* Sliders */
+    .sliders{display:flex;flex-direction:column;gap:0.75rem}
+    .slider-row{display:flex;align-items:center;gap:0.75rem}
+    .slider-lbl{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;width:20px;flex-shrink:0}
+    .slider-lbl.r{color:#f87171}.slider-lbl.g{color:#86efac}.slider-lbl.b{color:#93c5fd}
+    .slider-lbl.h{color:#f472b6}.slider-lbl.s{color:var(--accent3)}.slider-lbl.l{color:#fde68a}
+    input[type=range].cslider{flex:1;height:6px;border-radius:3px;outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
+    input[type=range].cslider::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:3px solid var(--bg);cursor:pointer;box-shadow:0 0 6px rgba(0,0,0,0.4)}
+    .slider-val{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--text);min-width:36px;text-align:right}
+
+    /* Output formats */
+    .formats-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;position:sticky;top:80px}
+    .format-tabs{display:flex;border-bottom:1px solid var(--border)}
+    .fmt-tab{flex:1;padding:10px;text-align:center;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);cursor:pointer;transition:all 0.2s;border:none;background:transparent}
+    .fmt-tab.active{color:var(--text);background:rgba(236,72,153,0.08);border-bottom:2px solid var(--pink)}
+    .formats-body{padding:1.5rem}
+    .fmt-row{display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .fmt-row:last-child{border-bottom:none}
+    .fmt-name{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);min-width:55px}
+    .fmt-val{font-family:'JetBrains Mono',monospace;font-size:0.88rem;color:var(--text);flex:1;cursor:pointer;transition:color 0.15s}
+    .fmt-val:hover{color:var(--accent3)}
+    .copy-sm{background:transparent;border:1px solid var(--border);border-radius:5px;padding:3px 8px;font-size:0.7rem;color:var(--muted);cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;flex-shrink:0}
+    .copy-sm:hover{border-color:var(--accent);color:var(--accent2)}
+    .copy-sm.copied{border-color:var(--green);color:var(--green)}
+
+    /* Palette / recent */
+    .palette-section{margin-top:1.5rem}
+    .palette-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.75rem}
+    .palette-row{display:flex;flex-wrap:wrap;gap:0.5rem}
+    .swatch{width:32px;height:32px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;flex-shrink:0}
+    .swatch:hover{transform:scale(1.15);border-color:rgba(255,255,255,0.3)}
+
+    /* Harmony */
+    .harmony-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-top:1.5rem}
+    .harmony-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent3);margin-bottom:1rem}
+    .harmony-grid{display:flex;gap:0.75rem;flex-wrap:wrap}
+    .h-swatch{display:flex;flex-direction:column;align-items:center;gap:0.4rem;cursor:pointer}
+    .h-box{width:44px;height:44px;border-radius:10px;border:1px solid var(--border);transition:transform 0.15s}
+    .h-box:hover{transform:scale(1.1)}
+    .h-label{font-size:0.65rem;color:var(--muted);font-family:'JetBrains Mono',monospace}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">🎨</div>
+    <h1 class="page-title">Color Picker & <span class="gradient">Converter</span></h1>
+    <p class="page-sub">Pick any color and instantly convert between HEX, RGB, HSL, and HSB. Copy any format.</p>
+  </div>
+
+  <div class="layout">
+    <!-- Left: Picker -->
+    <div>
+      <div class="picker-panel">
+        <div class="panel-header"><div class="panel-title">🎨 Color Picker</div></div>
+        <div class="panel-body">
+          <input type="color" class="big-picker" id="color-picker" value="#6366f1" oninput="onPickerChange(this.value)"/>
+          <div class="preview-box" id="preview-box">
+            <span class="preview-text" id="prev-dark" style="background:rgba(0,0,0,0.4);color:#fff">Dark text</span>
+            <span class="preview-text" id="prev-light" style="background:rgba(255,255,255,0.15);color:#fff">Light text</span>
+          </div>
+
+          <div class="hex-input-row">
+            <span class="hex-label">#</span>
+            <input class="hex-inp" id="hex-manual" type="text" maxlength="7" placeholder="6366F1" oninput="onHexInput(this.value)"/>
+          </div>
+
+          <div class="sliders" style="margin-bottom:1.25rem">
+            <div class="slider-row"><span class="slider-lbl r">R</span><input type="range" class="cslider" id="sl-r" min="0" max="255" style="background:linear-gradient(to right,#000,#f00)" oninput="onRGBSlider()"/><span class="slider-val" id="lbl-r">99</span></div>
+            <div class="slider-row"><span class="slider-lbl g">G</span><input type="range" class="cslider" id="sl-g" min="0" max="255" style="background:linear-gradient(to right,#000,#0f0)" oninput="onRGBSlider()"/><span class="slider-val" id="lbl-g">102</span></div>
+            <div class="slider-row"><span class="slider-lbl b">B</span><input type="range" class="cslider" id="sl-b" min="0" max="255" style="background:linear-gradient(to right,#000,#00f)" oninput="onRGBSlider()"/><span class="slider-val" id="lbl-b">241</span></div>
+          </div>
+          <div class="sliders">
+            <div class="slider-row"><span class="slider-lbl h">H</span><input type="range" class="cslider" id="sl-h" min="0" max="360" style="background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00)" oninput="onHSLSlider()"/><span class="slider-val" id="lbl-h">239°</span></div>
+            <div class="slider-row"><span class="slider-lbl s">S</span><input type="range" class="cslider" id="sl-s" min="0" max="100" style="background:linear-gradient(to right,#888,#6366f1)" oninput="onHSLSlider()"/><span class="slider-val" id="lbl-s">84%</span></div>
+            <div class="slider-row"><span class="slider-lbl l">L</span><input type="range" class="cslider" id="sl-l" min="0" max="100" style="background:linear-gradient(to right,#000,#6366f1,#fff)" oninput="onHSLSlider()"/><span class="slider-val" id="lbl-l">67%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent colors -->
+      <div class="palette-section" id="recent-section" style="display:none">
+        <div class="palette-title">Recent Colors</div>
+        <div class="palette-row" id="recent-row"></div>
+      </div>
+
+      <!-- Presets -->
+      <div class="palette-section">
+        <div class="palette-title">Quick Presets</div>
+        <div class="palette-row" id="preset-row"></div>
+      </div>
+    </div>
+
+    <!-- Right: Formats + Harmony -->
+    <div>
+      <div class="formats-panel">
+        <div class="panel-header"><div class="panel-title">📋 Color Formats</div></div>
+        <div class="formats-body">
+          <div class="fmt-row"><span class="fmt-name">HEX</span><span class="fmt-val" id="fmt-hex" onclick="copyFmt('hex')">#6366F1</span><button class="copy-sm" onclick="copyFmt('hex')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">RGB</span><span class="fmt-val" id="fmt-rgb" onclick="copyFmt('rgb')">rgb(99, 102, 241)</span><button class="copy-sm" onclick="copyFmt('rgb')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">HSL</span><span class="fmt-val" id="fmt-hsl" onclick="copyFmt('hsl')">hsl(239, 84%, 67%)</span><button class="copy-sm" onclick="copyFmt('hsl')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">HSB</span><span class="fmt-val" id="fmt-hsb" onclick="copyFmt('hsb')">hsb(239, 59%, 95%)</span><button class="copy-sm" onclick="copyFmt('hsb')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">CMYK</span><span class="fmt-val" id="fmt-cmyk" onclick="copyFmt('cmyk')">cmyk(59%, 58%, 0%, 5%)</span><button class="copy-sm" onclick="copyFmt('cmyk')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">CSS</span><span class="fmt-val" id="fmt-css" onclick="copyFmt('css')" style="font-size:0.78rem">rgba(99, 102, 241, 1.0)</span><button class="copy-sm" onclick="copyFmt('css')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">HEX8</span><span class="fmt-val" id="fmt-hex8" onclick="copyFmt('hex8')">#6366F1FF</span><button class="copy-sm" onclick="copyFmt('hex8')">copy</button></div>
+          <div class="fmt-row"><span class="fmt-name">Tailwind</span><span class="fmt-val" id="fmt-tw" onclick="copyFmt('tw')" style="color:var(--muted)">—</span><button class="copy-sm" onclick="copyFmt('tw')">copy</button></div>
+        </div>
+      </div>
+
+      <div class="harmony-section">
+        <div class="harmony-title">🎭 Color Harmony</div>
+        <div class="harmony-grid" id="harmony-grid"></div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  const PRESETS = ['#ef4444','#f97316','#facc15','#22c55e','#06b6d4','#6366f1','#a855f7','#ec4899','#ffffff','#94a3b8','#1e293b','#000000'];
+  const TAILWIND = {
+    '#ef4444':'red-500','#f97316':'orange-500','#facc15':'yellow-400','#22c55e':'green-500',
+    '#3b82f6':'blue-500','#6366f1':'indigo-500','#a855f7':'purple-500','#ec4899':'pink-500',
+    '#06b6d4':'cyan-500','#14b8a6':'teal-500','#f43f5e':'rose-500','#84cc16':'lime-500'
+  };
+  let recent = [];
+  let currentHex = '#6366f1';
+
+  // Build presets
+  const pr = document.getElementById('preset-row');
+  PRESETS.forEach(c => {
+    const s = document.createElement('div');
+    s.className = 'swatch'; s.style.background = c;
+    s.title = c; s.onclick = () => onPickerChange(c);
+    pr.appendChild(s);
+  });
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    return {r,g,b};
+  }
+
+  function rgbToHex(r,g,b) {
+    return '#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+  }
+
+  function rgbToHsl(r,g,b) {
+    r/=255; g/=255; b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b);
+    let h,s,l=(max+min)/2;
+    if(max===min){h=s=0}else{
+      const d=max-min; s=l>0.5?d/(2-max-min):d/(max+min);
+      switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;}
+      h/=6;
+    }
+    return {h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)};
+  }
+
+  function hslToRgb(h,s,l) {
+    s/=100; l/=100; const k=n=>(n+h/30)%12; const a=s*Math.min(l,1-l);
+    const f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+    return {r:Math.round(f(0)*255),g:Math.round(f(8)*255),b:Math.round(f(4)*255)};
+  }
+
+  function rgbToHsb(r,g,b) {
+    r/=255;g/=255;b/=255;
+    const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;
+    let h=0;
+    if(d){
+      if(max===r)h=((g-b)/d)%6;
+      else if(max===g)h=(b-r)/d+2;
+      else h=(r-g)/d+4;
+      h=Math.round(h*60); if(h<0)h+=360;
+    }
+    return {h,s:max?Math.round(d/max*100):0,b:Math.round(max*100)};
+  }
+
+  function rgbToCmyk(r,g,b) {
+    r/=255;g/=255;b/=255;
+    const k=1-Math.max(r,g,b);
+    if(k===1) return {c:0,m:0,y:0,k:100};
+    return {c:Math.round((1-r-k)/(1-k)*100),m:Math.round((1-g-k)/(1-k)*100),y:Math.round((1-b-k)/(1-k)*100),k:Math.round(k*100)};
+  }
+
+  function contrastRatio(hex) {
+    const {r,g,b} = hexToRgb(hex);
+    const l = 0.2126*(r/255)**2.2 + 0.7152*(g/255)**2.2 + 0.0722*(b/255)**2.2;
+    return l > 0.179 ? 'dark' : 'light';
+  }
+
+  function updateAll(hex) {
+    currentHex = hex.toLowerCase();
+    const {r,g,b} = hexToRgb(hex);
+    const hsl = rgbToHsl(r,g,b);
+    const hsb = rgbToHsb(r,g,b);
+    const cmyk = rgbToCmyk(r,g,b);
+
+    // Picker sync
+    document.getElementById('color-picker').value = hex;
+    document.getElementById('hex-manual').value = hex.slice(1).toUpperCase();
+
+    // Sliders
+    document.getElementById('sl-r').value = r; document.getElementById('lbl-r').textContent = r;
+    document.getElementById('sl-g').value = g; document.getElementById('lbl-g').textContent = g;
+    document.getElementById('sl-b').value = b; document.getElementById('lbl-b').textContent = b;
+    document.getElementById('sl-h').value = hsl.h; document.getElementById('lbl-h').textContent = hsl.h+'°';
+    document.getElementById('sl-s').value = hsl.s; document.getElementById('lbl-s').textContent = hsl.s+'%';
+    document.getElementById('sl-l').value = hsl.l; document.getElementById('lbl-l').textContent = hsl.l+'%';
+
+    // Preview
+    const pb = document.getElementById('preview-box');
+    pb.style.background = hex;
+    const cr = contrastRatio(hex);
+    const textColor = cr === 'dark' ? '#000' : '#fff';
+    ['prev-dark','prev-light'].forEach(id => document.getElementById(id).style.color = textColor);
+
+    // Formats
+    document.getElementById('fmt-hex').textContent = hex.toUpperCase();
+    document.getElementById('fmt-rgb').textContent = `rgb(${r}, ${g}, ${b})`;
+    document.getElementById('fmt-hsl').textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+    document.getElementById('fmt-hsb').textContent = `hsb(${hsb.h}, ${hsb.s}%, ${hsb.b}%)`;
+    document.getElementById('fmt-cmyk').textContent = `cmyk(${cmyk.c}%, ${cmyk.m}%, ${cmyk.y}%, ${cmyk.k}%)`;
+    document.getElementById('fmt-css').textContent = `rgba(${r}, ${g}, ${b}, 1.0)`;
+    document.getElementById('fmt-hex8').textContent = hex.toUpperCase() + 'FF';
+    const tw = TAILWIND[hex.toLowerCase()];
+    document.getElementById('fmt-tw').textContent = tw ? `text-${tw} / bg-${tw}` : '—';
+    document.getElementById('fmt-tw').style.color = tw ? 'var(--text)' : 'var(--muted)';
+
+    // Harmony
+    buildHarmony(hsl.h, hsl.s, hsl.l);
+  }
+
+  function buildHarmony(h, s, l) {
+    const harmonies = [
+      {label:'Base',    h:h},
+      {label:'Compl.',  h:(h+180)%360},
+      {label:'Split-1', h:(h+150)%360},
+      {label:'Split-2', h:(h+210)%360},
+      {label:'Triad-1', h:(h+120)%360},
+      {label:'Triad-2', h:(h+240)%360},
+      {label:'Analog-1',h:(h+30)%360},
+      {label:'Analog-2',h:(h-30+360)%360},
+    ];
+    const grid = document.getElementById('harmony-grid');
+    grid.innerHTML = harmonies.map(hm => {
+      const {r,g,b} = hslToRgb(hm.h, s, l);
+      const hex = rgbToHex(r,g,b);
+      return `<div class="h-swatch" onclick="onPickerChange('${hex}')" title="${hex}">
+        <div class="h-box" style="background:${hex}"></div>
+        <div class="h-label">${hm.label}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function onPickerChange(hex) {
+    if (!hex.startsWith('#')) hex = '#' + hex;
+    addRecent(hex);
+    updateAll(hex);
+  }
+
+  function onHexInput(val) {
+    const hex = '#' + val.replace(/[^0-9a-fA-F]/g,'').slice(0,6);
+    if (hex.length === 7) updateAll(hex);
+  }
+
+  function onRGBSlider() {
+    const r = +document.getElementById('sl-r').value;
+    const g = +document.getElementById('sl-g').value;
+    const b = +document.getElementById('sl-b').value;
+    updateAll(rgbToHex(r,g,b));
+  }
+
+  function onHSLSlider() {
+    const h = +document.getElementById('sl-h').value;
+    const s = +document.getElementById('sl-s').value;
+    const l = +document.getElementById('sl-l').value;
+    const {r,g,b} = hslToRgb(h,s,l);
+    updateAll(rgbToHex(r,g,b));
+  }
+
+  function addRecent(hex) {
+    recent = [hex, ...recent.filter(c => c !== hex)].slice(0, 12);
+    const row = document.getElementById('recent-row');
+    document.getElementById('recent-section').style.display = recent.length ? 'block' : 'none';
+    row.innerHTML = recent.map(c => `<div class="swatch" style="background:${c}" title="${c}" onclick="onPickerChange('${c}')"></div>`).join('');
+  }
+
+  const fmtData = {
+    hex: () => document.getElementById('fmt-hex').textContent,
+    rgb: () => document.getElementById('fmt-rgb').textContent,
+    hsl: () => document.getElementById('fmt-hsl').textContent,
+    hsb: () => document.getElementById('fmt-hsb').textContent,
+    cmyk:() => document.getElementById('fmt-cmyk').textContent,
+    css: () => document.getElementById('fmt-css').textContent,
+    hex8:() => document.getElementById('fmt-hex8').textContent,
+    tw:  () => document.getElementById('fmt-tw').textContent,
+  };
+
+  function copyFmt(key) {
+    const val = fmtData[key]();
+    if (val === '—') return;
+    navigator.clipboard.writeText(val).then(() => showToast(`Copied: ${val}`));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  updateAll('#6366f1');
+</script>
+</body>
+</html>

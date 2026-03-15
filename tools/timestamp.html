@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--cyan:#06b6d4}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(6,182,212,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(6,182,212,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--cyan) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Live clock */
+    .live-clock{background:linear-gradient(135deg,rgba(6,182,212,0.08) 0%,rgba(99,102,241,0.08) 100%);border:1px solid rgba(6,182,212,0.2);border-radius:20px;padding:2rem;text-align:center;margin-bottom:2rem;position:relative;overflow:hidden}
+    .live-clock::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(6,182,212,0.1),transparent 70%);pointer-events:none}
+    .clock-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--cyan);margin-bottom:0.75rem;opacity:0.8}
+    .clock-ts{font-family:'JetBrains Mono',monospace;font-size:clamp(2rem,6vw,3.5rem);font-weight:700;color:#fff;letter-spacing:-0.02em;margin-bottom:0.5rem}
+    .clock-ms{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--muted)}
+    .clock-sub{display:flex;justify-content:center;gap:2rem;margin-top:1rem;flex-wrap:wrap}
+    .clock-item{text-align:center}
+    .clock-item-val{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--accent3)}
+    .clock-item-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-top:2px}
+    .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse 1s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+    /* Conversion panels */
+    .panels{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+    @media(max-width:640px){.panels{grid-template-columns:1fr}}
+    .conv-panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .conv-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
+    .conv-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
+    .t1{color:var(--cyan)}.t2{color:var(--accent3)}
+    .conv-body{padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
+    .inp-row{display:flex;gap:0.75rem;align-items:center}
+    .ts-input{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:1rem;outline:none;transition:border-color 0.2s}
+    .ts-input:focus{border-color:rgba(6,182,212,0.5)}
+    .btn{border:none;border-radius:10px;padding:10px 18px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;white-space:nowrap}
+    .btn-cyan{background:rgba(6,182,212,0.15);border:1px solid rgba(6,182,212,0.3);color:var(--cyan)}
+    .btn-cyan:hover{background:rgba(6,182,212,0.25)}
+    .btn-accent{background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);color:var(--accent3)}
+    .btn-accent:hover{background:rgba(99,102,241,0.25)}
+    .results-list{display:flex;flex-direction:column;gap:0.6rem}
+    .res-row{display:flex;align-items:flex-start;gap:0.75rem;padding:0.6rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+    .res-row:last-child{border-bottom:none}
+    .res-key{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);min-width:80px;padding-top:2px;flex-shrink:0}
+    .res-val{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--text);flex:1;cursor:pointer;transition:color 0.15s}
+    .res-val:hover{color:var(--cyan)}
+    .copy-xs{background:transparent;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:0.68rem;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;flex-shrink:0}
+    .copy-xs:hover{border-color:var(--cyan);color:var(--cyan)}
+    .datetime-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.9rem;outline:none;transition:border-color 0.2s}
+    .datetime-input:focus{border-color:rgba(99,102,241,0.5)}
+
+    /* Relative time examples */
+    .relative-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem}
+    .rel-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:1rem}
+    .rel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0.75rem}
+    .rel-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:0.875rem;cursor:pointer;transition:all 0.2s}
+    .rel-item:hover{border-color:rgba(6,182,212,0.3);background:rgba(6,182,212,0.05)}
+    .rel-name{font-size:0.78rem;color:var(--muted);margin-bottom:0.35rem}
+    .rel-ts{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--accent3);font-weight:600}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">🕐</div>
+    <h1 class="page-title">Unix Timestamp <span class="gradient">Converter</span></h1>
+    <p class="page-sub">Convert Unix timestamps ↔ human-readable dates. Live current time, relative display, all timezones.</p>
+  </div>
+
+  <!-- Live clock -->
+  <div class="live-clock">
+    <div class="clock-label"><span class="live-dot"></span>Current Unix Timestamp</div>
+    <div class="clock-ts" id="live-ts">—</div>
+    <div class="clock-ms" id="live-ms">— ms</div>
+    <div class="clock-sub">
+      <div class="clock-item"><div class="clock-item-val" id="live-utc">—</div><div class="clock-item-label">UTC</div></div>
+      <div class="clock-item"><div class="clock-item-val" id="live-local">—</div><div class="clock-item-label">Local</div></div>
+      <div class="clock-item"><div class="clock-item-val" id="live-iso">—</div><div class="clock-item-label">ISO 8601</div></div>
+    </div>
+  </div>
+
+  <div class="panels">
+    <!-- Timestamp → Date -->
+    <div class="conv-panel">
+      <div class="conv-header"><div class="conv-title t1">🔢 Timestamp → Date</div></div>
+      <div class="conv-body">
+        <div class="inp-row">
+          <input class="ts-input" id="ts-input" type="text" placeholder="e.g. 1700000000" oninput="tsToDate()"/>
+          <button class="btn btn-cyan" onclick="useNow()">Now</button>
+        </div>
+        <div class="results-list" id="ts-results">
+          <div style="color:var(--muted);font-size:0.875rem;text-align:center;padding:0.5rem">Enter a timestamp above</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Date → Timestamp -->
+    <div class="conv-panel">
+      <div class="conv-header"><div class="conv-title t2">📅 Date → Timestamp</div></div>
+      <div class="conv-body">
+        <input class="datetime-input" id="date-input" type="datetime-local" oninput="dateToTs()"/>
+        <div class="results-list" id="date-results">
+          <div style="color:var(--muted);font-size:0.875rem;text-align:center;padding:0.5rem">Pick a date above</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick references -->
+  <div class="relative-section">
+    <div class="rel-title">⚡ Quick Reference Timestamps</div>
+    <div class="rel-grid" id="rel-grid"></div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  // Live clock
+  function tick() {
+    const now = new Date();
+    const ts = Math.floor(now.getTime()/1000);
+    const ms = now.getTime();
+    document.getElementById('live-ts').textContent = ts;
+    document.getElementById('live-ms').textContent = ms + ' ms';
+    document.getElementById('live-utc').textContent = now.toUTCString().replace(' GMT','');
+    document.getElementById('live-local').textContent = now.toLocaleString();
+    document.getElementById('live-iso').textContent = now.toISOString();
+  }
+  tick(); setInterval(tick, 500);
+
+  // Init date input to now
+  const nowDt = new Date();
+  nowDt.setSeconds(0,0);
+  document.getElementById('date-input').value = nowDt.toISOString().slice(0,16);
+  dateToTs();
+
+  function fmtRelative(d) {
+    const diff = (Date.now() - d.getTime()) / 1000;
+    const abs = Math.abs(diff);
+    const future = diff < 0;
+    const suffix = future ? 'from now' : 'ago';
+    if(abs < 60) return `${Math.round(abs)}s ${suffix}`;
+    if(abs < 3600) return `${Math.round(abs/60)}m ${suffix}`;
+    if(abs < 86400) return `${Math.round(abs/3600)}h ${suffix}`;
+    if(abs < 2592000) return `${Math.round(abs/86400)}d ${suffix}`;
+    if(abs < 31536000) return `${Math.round(abs/2592000)} months ${suffix}`;
+    return `${(abs/31536000).toFixed(1)} years ${suffix}`;
+  }
+
+  function tsToDate() {
+    const raw = document.getElementById('ts-input').value.trim();
+    if(!raw) return;
+    const num = parseInt(raw);
+    if(isNaN(num)) { document.getElementById('ts-results').innerHTML = '<div style="color:#fca5a5;font-size:0.875rem">Invalid timestamp</div>'; return; }
+    // Auto-detect ms vs seconds
+    const d = new Date(num > 1e12 ? num : num * 1000);
+    if(isNaN(d.getTime())) { document.getElementById('ts-results').innerHTML = '<div style="color:#fca5a5;font-size:0.875rem">Invalid timestamp</div>'; return; }
+    const rows = [
+      ['UTC',       d.toUTCString()],
+      ['Local',     d.toLocaleString()],
+      ['ISO 8601',  d.toISOString()],
+      ['Date only', d.toISOString().split('T')[0]],
+      ['Time (UTC)',d.toISOString().split('T')[1].replace('Z','')],
+      ['Relative',  fmtRelative(d)],
+      ['Day',       d.toLocaleDateString('en-US',{weekday:'long'})],
+      ['Unix ms',   d.getTime().toString()],
+    ];
+    document.getElementById('ts-results').innerHTML = rows.map(([k,v]) =>
+      `<div class="res-row"><span class="res-key">${k}</span><span class="res-val" onclick="copyVal('${v.replace(/'/g,"\\'")}', this)">${v}</span><button class="copy-xs" onclick="copyVal('${v.replace(/'/g,"\\'")}',this)">copy</button></div>`
+    ).join('');
+  }
+
+  function dateToTs() {
+    const val = document.getElementById('date-input').value;
+    if(!val) return;
+    const d = new Date(val);
+    if(isNaN(d.getTime())) return;
+    const ts = Math.floor(d.getTime()/1000);
+    const rows = [
+      ['Unix sec',  ts.toString()],
+      ['Unix ms',   d.getTime().toString()],
+      ['UTC',       d.toUTCString()],
+      ['ISO 8601',  d.toISOString()],
+      ['Relative',  fmtRelative(d)],
+    ];
+    document.getElementById('date-results').innerHTML = rows.map(([k,v]) =>
+      `<div class="res-row"><span class="res-key">${k}</span><span class="res-val" onclick="copyVal('${v.replace(/'/g,"\\'")}',this)">${v}</span><button class="copy-xs" onclick="copyVal('${v.replace(/'/g,"\\'")}',this)">copy</button></div>`
+    ).join('');
+  }
+
+  function useNow() {
+    document.getElementById('ts-input').value = Math.floor(Date.now()/1000);
+    tsToDate();
+  }
+
+  // Quick refs
+  const NOW = Date.now()/1000;
+  const refs = [
+    {label:'Now',               ts: () => Math.floor(Date.now()/1000)},
+    {label:'1 hour ago',        ts: () => Math.floor(Date.now()/1000) - 3600},
+    {label:'1 hour from now',   ts: () => Math.floor(Date.now()/1000) + 3600},
+    {label:'Yesterday',         ts: () => Math.floor(Date.now()/1000) - 86400},
+    {label:'Tomorrow',          ts: () => Math.floor(Date.now()/1000) + 86400},
+    {label:'1 week ago',        ts: () => Math.floor(Date.now()/1000) - 604800},
+    {label:'1 year ago',        ts: () => Math.floor(Date.now()/1000) - 31536000},
+    {label:'Unix Epoch',        ts: () => 0},
+    {label:'Y2K (Jan 1 2000)',  ts: () => 946684800},
+    {label:'End of 2025',       ts: () => 1767225600},
+  ];
+  const grid = document.getElementById('rel-grid');
+  function buildRefs() {
+    grid.innerHTML = refs.map(r => {
+      const ts = r.ts();
+      return `<div class="rel-item" onclick="loadTs(${ts})">
+        <div class="rel-name">${r.label}</div>
+        <div class="rel-ts">${ts}</div>
+      </div>`;
+    }).join('');
+  }
+  buildRefs();
+  setInterval(buildRefs, 5000);
+
+  function loadTs(ts) {
+    document.getElementById('ts-input').value = ts;
+    tsToDate();
+    document.getElementById('ts-input').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+
+  function copyVal(val, btn) {
+    navigator.clipboard.writeText(val).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = '✓';
+      showToast('Copied!');
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+</body>
+</html>

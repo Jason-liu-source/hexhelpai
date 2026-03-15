@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Encoder & Decoder — Parse & Encode URLs Online | HexHelp AI</title>
+  <meta name="description" content="Free URL encoder and decoder. Encode or decode URL strings and query parameters. Parse any URL into components. Supports full and partial URLs." />
+  <meta name="keywords" content="URL encoder, URL decoder, encode URL, decode URL, percent encoding, query string parser, URL parser, URL components" />
+  <meta name="author" content="HexHelp AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://hexhelpai.com/tools/url.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://hexhelpai.com/tools/url.html" />
+  <meta property="og:title" content="URL Encoder & Decoder | HexHelp AI" />
+  <meta property="og:description" content="Encode, decode and parse URLs. Free, instant, no signup." />
+  <meta property="og:image" content="https://hexhelpai.com/assets/og-image.png" />
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--yellow:#facc15}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(250,204,21,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(250,204,21,0.025) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(250,204,21,0.12)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--yellow) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Mode toggle */
+    .mode-toggle{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;gap:4px;margin:0 auto 2rem;width:fit-content}
+    .mode-btn{padding:8px 28px;border-radius:9px;border:none;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;color:var(--muted);background:transparent}
+    .mode-btn.active{background:rgba(250,204,21,0.15);color:var(--yellow);border:1px solid rgba(250,204,21,0.3);box-shadow:0 2px 10px rgba(250,204,21,0.15)}
+    .mode-btn:hover:not(.active){color:var(--text);background:rgba(255,255,255,0.04)}
+
+    /* Panels */
+    .panels{display:grid;grid-template-columns:1fr auto 1fr;gap:0;background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1.5rem}
+    @media(max-width:700px){.panels{grid-template-columns:1fr}}
+    .panel{display:flex;flex-direction:column}
+    .panel-header{display:flex;align-items:center;justify-content:space-between;padding:0.875rem 1.25rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
+    .panel-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
+    .pt-left{color:var(--yellow)}
+    .pt-right{color:var(--green)}
+    .panel-acts{display:flex;gap:0.4rem}
+    textarea.ta{flex:1;background:var(--bg2);border:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.82rem;padding:1.25rem;resize:none;outline:none;min-height:200px;line-height:1.6}
+    .panel:last-child textarea{border-left:1px solid var(--border)}
+    textarea.ta::placeholder{color:var(--muted)}
+    .panel-divider{display:flex;align-items:center;justify-content:center;padding:0 0.5rem;background:var(--bg2);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+    .arrow-circle{width:40px;height:40px;border-radius:50%;background:rgba(250,204,21,0.1);border:1px solid rgba(250,204,21,0.25);display:flex;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;transition:all 0.2s}
+    .arrow-circle:hover{background:rgba(250,204,21,0.2)}
+    .ea-btn{background:transparent;border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:0.7rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif}
+    .ea-btn:hover{border-color:rgba(250,204,21,0.4);color:var(--yellow)}
+    .ea-btn.copied{border-color:var(--green);color:var(--green)}
+
+    /* URL parser */
+    .parser-section{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:1.5rem}
+    .parser-header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02)}
+    .parser-title{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent3)}
+    .parser-input-row{display:flex;gap:0.75rem;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+    .url-inp{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 16px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:0.875rem;outline:none;transition:border-color 0.2s}
+    .url-inp:focus{border-color:rgba(99,102,241,0.5)}
+    .url-inp::placeholder{color:var(--muted)}
+    .btn-accent{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:0.875rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;white-space:nowrap}
+    .btn-accent:hover{background:var(--accent2);transform:translateY(-1px)}
+    .parsed-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0}
+    .parsed-row{display:flex;align-items:flex-start;gap:0.75rem;padding:0.75rem 1.5rem;border-bottom:1px solid rgba(255,255,255,0.04);border-right:1px solid rgba(255,255,255,0.04)}
+    .parsed-row:last-child{border-bottom:none}
+    .pr-key{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);min-width:80px;padding-top:2px;flex-shrink:0}
+    .pr-val{font-family:'JetBrains Mono',monospace;font-size:0.82rem;color:var(--text);flex:1;word-break:break-all;cursor:pointer}
+    .pr-val:hover{color:var(--accent3)}
+    .pr-empty{color:var(--muted)}
+    .copy-xs{background:transparent;border:1px solid var(--border);border-radius:4px;padding:2px 7px;font-size:0.68rem;color:var(--muted);cursor:pointer;transition:all 0.15s;font-family:'Inter',sans-serif;flex-shrink:0}
+    .copy-xs:hover{border-color:var(--accent);color:var(--accent2)}
+
+    /* Query params table */
+    .params-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .params-header{padding:0.875rem 1.5rem;border-bottom:1px solid var(--border);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--yellow);background:rgba(255,255,255,0.02)}
+    .params-table{width:100%;border-collapse:collapse}
+    .params-table th{padding:0.6rem 1.5rem;text-align:left;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);border-bottom:1px solid var(--border)}
+    .params-table td{padding:0.6rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:0.82rem;border-bottom:1px solid rgba(255,255,255,0.04);word-break:break-all;cursor:pointer}
+    .params-table tr:last-child td{border-bottom:none}
+    .params-table tr:hover td{background:rgba(250,204,21,0.03)}
+    .params-table td:first-child{color:var(--accent3)}
+    .params-table td:last-child{color:var(--text)}
+    .no-params{padding:1.25rem 1.5rem;color:var(--muted);font-size:0.875rem;text-align:center}
+
+    .info-row{display:flex;gap:0.75rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}
+    .info-pill{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:0.78rem;color:var(--muted)}
+    .info-pill span{color:var(--text);font-weight:600}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">🔗</div>
+    <h1 class="page-title">URL <span class="gradient">Encoder / Decoder</span></h1>
+    <p class="page-sub">Encode or decode URLs and query strings. Parse any URL into its components instantly.</p>
+  </div>
+
+  <!-- Mode toggle -->
+  <div class="mode-toggle">
+    <button class="mode-btn active" id="m-encode" onclick="setMode('encode')">Encode →</button>
+    <button class="mode-btn" id="m-decode" onclick="setMode('decode')">← Decode</button>
+  </div>
+
+  <!-- Encode/Decode panels -->
+  <div class="info-row">
+    <div class="info-pill">Input: <span id="info-in">0</span> chars</div>
+    <div class="info-pill">Output: <span id="info-out">0</span> chars</div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title pt-left" id="left-lbl">Raw / Decoded</span>
+        <div class="panel-acts">
+          <button class="ea-btn" onclick="pasteLeft()">Paste</button>
+          <button class="ea-btn" onclick="clearAll()">Clear</button>
+        </div>
+      </div>
+      <textarea class="ta" id="inp-left" placeholder="Paste text or URL to encode…" oninput="liveConvert()"></textarea>
+    </div>
+    <div class="panel-divider">
+      <div class="arrow-circle" onclick="swapPanels()" title="Swap">⇄</div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title pt-right" id="right-lbl">Encoded / Result</span>
+        <div class="panel-acts">
+          <button class="ea-btn" id="copy-out" onclick="copyOutput()">Copy</button>
+        </div>
+      </div>
+      <textarea class="ta" id="inp-right" placeholder="Result appears here…" readonly></textarea>
+    </div>
+  </div>
+
+  <!-- URL Parser -->
+  <div class="parser-section">
+    <div class="parser-header">
+      <span class="parser-title">🔬 URL Parser — Break Down Any URL</span>
+    </div>
+    <div class="parser-input-row">
+      <input class="url-inp" id="parse-input" type="text" placeholder="https://example.com:8080/path/to/page?foo=bar&baz=qux#section" oninput="parseURL()"/>
+      <button class="btn-accent" onclick="parseURL()">Parse</button>
+    </div>
+    <div class="parsed-grid" id="parsed-grid">
+      <div style="padding:1.5rem;color:var(--muted);font-size:0.875rem;text-align:center;grid-column:1/-1">Enter a URL above to parse it</div>
+    </div>
+  </div>
+
+  <!-- Query params -->
+  <div class="params-section" id="params-section" style="display:none">
+    <div class="params-header">🔑 Query Parameters</div>
+    <div id="params-body"></div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+  let mode = 'encode';
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('m-encode').classList.toggle('active', m === 'encode');
+    document.getElementById('m-decode').classList.toggle('active', m === 'decode');
+    document.getElementById('left-lbl').textContent = m === 'encode' ? 'Raw / Decoded' : 'Encoded Input';
+    document.getElementById('right-lbl').textContent = m === 'encode' ? 'Encoded Output' : 'Decoded Result';
+    document.getElementById('inp-left').placeholder = m === 'encode' ? 'Paste text or URL to encode…' : 'Paste encoded URL to decode…';
+    liveConvert();
+  }
+
+  function liveConvert() {
+    const inp = document.getElementById('inp-left').value;
+    document.getElementById('info-in').textContent = inp.length;
+    let out = '';
+    try {
+      out = mode === 'encode' ? encodeURIComponent(inp) : decodeURIComponent(inp);
+    } catch { out = inp; }
+    document.getElementById('inp-right').value = out;
+    document.getElementById('info-out').textContent = out.length;
+  }
+
+  function swapPanels() {
+    const l = document.getElementById('inp-left').value;
+    const r = document.getElementById('inp-right').value;
+    document.getElementById('inp-left').value = r;
+    setMode(mode === 'encode' ? 'decode' : 'encode');
+    liveConvert();
+  }
+
+  function clearAll() {
+    document.getElementById('inp-left').value = '';
+    document.getElementById('inp-right').value = '';
+    document.getElementById('info-in').textContent = 0;
+    document.getElementById('info-out').textContent = 0;
+  }
+
+  async function pasteLeft() {
+    try { document.getElementById('inp-left').value = await navigator.clipboard.readText(); liveConvert(); } catch {}
+  }
+
+  function copyOutput() {
+    const val = document.getElementById('inp-right').value;
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(() => {
+      const btn = document.getElementById('copy-out');
+      const orig = btn.textContent;
+      btn.textContent = '✓'; btn.classList.add('copied');
+      showToast('Copied!');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+
+  function parseURL() {
+    const raw = document.getElementById('parse-input').value.trim();
+    const grid = document.getElementById('parsed-grid');
+    const paramsSection = document.getElementById('params-section');
+
+    if (!raw) {
+      grid.innerHTML = '<div style="padding:1.5rem;color:var(--muted);font-size:0.875rem;text-align:center;grid-column:1/-1">Enter a URL above to parse it</div>';
+      paramsSection.style.display = 'none';
+      return;
+    }
+
+    let u;
+    try { u = new URL(raw); }
+    catch { try { u = new URL('https://' + raw); } catch {
+      grid.innerHTML = '<div style="padding:1.5rem;color:#fca5a5;font-size:0.875rem;text-align:center;grid-column:1/-1">❌ Invalid URL</div>';
+      paramsSection.style.display = 'none';
+      return;
+    }}
+
+    const fields = [
+      ['Protocol', u.protocol.replace(':','')],
+      ['Host', u.hostname],
+      ['Port', u.port || (u.protocol === 'https:' ? '443' : '80') + ' (default)'],
+      ['Path', u.pathname || '/'],
+      ['Query', u.search || '—'],
+      ['Hash / Fragment', u.hash ? u.hash.slice(1) : '—'],
+      ['Origin', u.origin],
+      ['Full URL', u.href],
+    ];
+
+    grid.innerHTML = fields.map(([k, v]) => `
+      <div class="parsed-row">
+        <span class="pr-key">${k}</span>
+        <span class="pr-val${v === '—' ? ' pr-empty' : ''}" onclick="copyVal('${v.replace(/'/g,"\\'")}',this)">${v}</span>
+        ${v !== '—' ? `<button class="copy-xs" onclick="copyVal('${v.replace(/'/g,"\\'")}',this)">copy</button>` : ''}
+      </div>`).join('');
+
+    // Query params table
+    const params = [...u.searchParams.entries()];
+    if (params.length) {
+      document.getElementById('params-body').innerHTML = `
+        <table class="params-table">
+          <thead><tr><th>Key</th><th>Value (decoded)</th></tr></thead>
+          <tbody>${params.map(([k,v]) => `<tr onclick="copyVal('${v.replace(/'/g,"\\'")}',this)"><td>${k}</td><td>${v || '(empty)'}</td></tr>`).join('')}</tbody>
+        </table>`;
+      paramsSection.style.display = 'block';
+    } else {
+      paramsSection.style.display = 'none';
+    }
+  }
+
+  function copyVal(val, el) {
+    navigator.clipboard.writeText(val).then(() => showToast('Copied!'));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+
+  // Pre-fill parser with a sample URL
+  document.getElementById('parse-input').value = 'https://hexhelpai.com/tools/url.html?tool=url-encoder&ref=homepage#parser';
+  parseURL();
+</script>
+</body>
+</html>
