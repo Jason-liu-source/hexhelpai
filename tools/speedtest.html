@@ -120,17 +120,16 @@
   </div>
 
   <div class="info-note">
-    Tests run via <a href="https://speed.cloudflare.com" target="_blank" rel="noopener">Cloudflare Speed Test</a> endpoints.
-    Results reflect your connection to Cloudflare's nearest edge — a good proxy for general internet speed.
+    Tests run directly against <strong>hexhelpai.com</strong> (this server).
+    Results reflect your real connection speed to this host.
   </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── Cloudflare speed test endpoints (CORS-open) ──
-  const CF_DOWN = (bytes) => `https://speed.cloudflare.com/__down?bytes=${bytes}`;
-  const CF_UP   = () => `https://speed.cloudflare.com/__up`;
+  // ── Server-side speed test endpoints ──
+  const CF_DOWN = (bytes) => `/api/speedtest/download`;
 
   let running = false;
 
@@ -164,7 +163,7 @@
     const samples = [];
     for (let i = 0; i < 8; i++) {
       const t0 = performance.now();
-      await fetch(`https://speed.cloudflare.com/__ping?i=${i}`, { cache: 'no-store' });
+      await fetch(`/api/speedtest/ping?i=${i}&t=${Date.now()}`, { cache: 'no-store' });
       samples.push(performance.now() - t0);
       setProgress(2 + i * 3.5, 'linear-gradient(90deg,var(--cyan),var(--accent2))');
     }
@@ -174,10 +173,10 @@
     return Math.round(trimmed[Math.floor(trimmed.length / 2)]);
   }
 
-  // ── Download: stream from CF, measure throughput ──
+  // ── Download: stream the test file, measure throughput ──
   async function measureDownload() {
-    const BYTES = 25 * 1024 * 1024; // 25 MB
-    const url = CF_DOWN(BYTES) + '&t=' + Date.now();
+    const BYTES = 20 * 1024 * 1024; // 20 MB (matches speedtest.bin)
+    const url = CF_DOWN(BYTES) + '?t=' + Date.now();
     const t0 = performance.now();
     const res = await fetch(url, { cache: 'no-store' });
     const reader = res.body.getReader();
@@ -189,42 +188,47 @@
       received += value.length;
       const elapsedSec = (performance.now() - t0) / 1000;
       const mbps = (received * 8) / (elapsedSec * 1e6);
-      const pct = received / BYTES;
+      const pct = Math.min(received / BYTES, 1);
       setProgress(30 + pct * 32, 'linear-gradient(90deg,var(--cyan),var(--accent2))');
       setSpeed(mbps, 'Downloading…', '');
       setCard('dl', 'active', mbps.toFixed(1));
     }
 
     const elapsed = (performance.now() - t0) / 1000;
-    return (BYTES * 8) / (elapsed * 1e6);
+    return (received * 8) / (elapsed * 1e6);
   }
 
-  // ── Upload: POST random bytes to CF upload endpoint ──
+  // ── Upload: send multiple small chunks (nginx return 200 reads nothing, so keep chunks small) ──
   async function measureUpload() {
-    const BYTES = 10 * 1024 * 1024; // 10 MB
-    const data = new Uint8Array(BYTES);
-    // Fill with random-ish data (avoid compression)
-    crypto.getRandomValues(data.subarray(0, Math.min(BYTES, 65536)));
+    const CHUNK = 256 * 1024;   // 256 KB per request
+    const ROUNDS = 20;           // ~5 MB total
+    const chunk = new Uint8Array(CHUNK);
+    // getRandomValues limit is 65536 bytes — fill in 64KB slices
+    for (let off = 0; off < CHUNK; off += 65536) {
+      crypto.getRandomValues(chunk.subarray(off, Math.min(off + 65536, CHUNK)));
+    }
 
-    let fakeProgress = 64;
-    const tick = setInterval(() => {
-      fakeProgress = Math.min(fakeProgress + 0.6, 93);
-      setProgress(fakeProgress, 'linear-gradient(90deg,var(--orange),#f59e0b)');
-    }, 120);
-
+    let totalSent = 0;
     const t0 = performance.now();
-    try {
-      await fetch(CF_UP() + '?t=' + Date.now(), {
+
+    for (let i = 0; i < ROUNDS; i++) {
+      await fetch(`/api/speedtest/upload?i=${i}&t=${Date.now()}`, {
         method: 'POST',
-        body: data,
+        body: chunk,
         headers: { 'Content-Type': 'application/octet-stream' },
         cache: 'no-store'
       });
-    } catch(e) {/* CF __up may return 200 or non-2xx — we time it regardless */}
+      totalSent += CHUNK;
+      const elapsedSec = (performance.now() - t0) / 1000;
+      const mbps = (totalSent * 8) / (elapsedSec * 1e6);
+      const pct = (i + 1) / ROUNDS;
+      setProgress(64 + pct * 29, 'linear-gradient(90deg,var(--orange),#f59e0b)');
+      setSpeed(mbps, 'Uploading…', 'upload-active');
+      setCard('ul', 'upload-active', mbps.toFixed(1));
+    }
 
     const elapsed = (performance.now() - t0) / 1000;
-    clearInterval(tick);
-    return (BYTES * 8) / (elapsed * 1e6);
+    return (totalSent * 8) / (elapsed * 1e6);
   }
 
   async function runTest() {
