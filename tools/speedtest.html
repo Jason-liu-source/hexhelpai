@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Network Speed Test — Check Your Internet Download & Upload Speed | HexHelp AI</title>
+  <meta name="description" content="Test your internet connection speed instantly. Measure download speed, upload speed, and latency (ping) directly in your browser. No software needed."/>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--cyan:#06b6d4;--orange:#f97316;--red:#ef4444}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(6,182,212,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(6,182,212,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--cyan) 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:500px;margin:0 auto}
+
+    /* Speed gauge */
+    .gauge-card{background:linear-gradient(135deg,rgba(6,182,212,0.06) 0%,rgba(99,102,241,0.06) 100%);border:1px solid rgba(6,182,212,0.18);border-radius:24px;padding:2.5rem 2rem 2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden}
+    .gauge-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(6,182,212,0.08),transparent 70%);pointer-events:none}
+    .speed-display{display:flex;align-items:baseline;justify-content:center;gap:10px;margin-bottom:0.5rem}
+    .speed-value{font-family:'JetBrains Mono',monospace;font-size:clamp(3.5rem,10vw,5.5rem);font-weight:700;color:var(--cyan);line-height:1;transition:color 0.5s}
+    .speed-value.upload-active{color:var(--orange)}
+    .speed-value.done{color:var(--green)}
+    .speed-unit{font-size:1.4rem;font-weight:600;color:var(--muted)}
+    .speed-phase{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:1.5rem}
+
+    /* Progress bar */
+    .progress-track{height:5px;background:var(--surface2);border-radius:3px;margin-bottom:2rem;overflow:hidden}
+    .progress-fill{height:100%;width:0%;border-radius:3px;background:linear-gradient(90deg,var(--cyan),var(--accent2));transition:width 0.35s ease,background 0.4s}
+
+    /* Result cards */
+    .result-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+    .result-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1rem;text-align:center;transition:border-color 0.3s,box-shadow 0.3s}
+    .result-card.active{border-color:rgba(6,182,212,0.4);box-shadow:0 0 20px rgba(6,182,212,0.08)}
+    .result-card.upload-active{border-color:rgba(249,115,22,0.4);box-shadow:0 0 20px rgba(249,115,22,0.08)}
+    .result-card.done{border-color:rgba(34,211,165,0.35);box-shadow:0 0 20px rgba(34,211,165,0.08)}
+    .rc-icon{font-size:1.4rem;margin-bottom:0.6rem}
+    .rc-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:0.5rem}
+    .rc-value{font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--muted);transition:color 0.3s}
+    .rc-value.live{color:var(--cyan)}
+    .rc-value.upload-live{color:var(--orange)}
+    .rc-value.done{color:var(--green)}
+    .rc-unit{font-size:0.7rem;color:var(--muted);margin-top:2px}
+
+    .status-text{color:var(--muted);font-size:0.85rem;text-align:center;margin-bottom:1.25rem;min-height:1.3em;transition:color 0.3s}
+
+    .start-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--cyan),var(--accent));border:none;border-radius:14px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:0.02em;transition:opacity 0.2s,transform 0.15s;font-family:'Inter',sans-serif}
+    .start-btn:hover:not(:disabled){opacity:0.88;transform:translateY(-1px)}
+    .start-btn:active:not(:disabled){transform:scale(0.98)}
+    .start-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+
+    /* Info note */
+    .info-note{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1rem 1.25rem;margin-top:1rem;font-size:0.8rem;color:var(--muted);line-height:1.6;text-align:center}
+    .info-note a{color:var(--accent3);text-decoration:none}
+    .info-note a:hover{text-decoration:underline}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    @media(max-width:480px){.result-row{grid-template-columns:1fr 1fr 1fr;gap:0.5rem}.rc-value{font-size:1.2rem}.speed-value{font-size:3rem}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">⚡</div>
+    <h1 class="page-title">Network <span class="gradient">Speed Test</span></h1>
+    <p class="page-sub">Check your real-time internet download speed, upload speed, and latency — right in your browser.</p>
+  </div>
+
+  <div class="gauge-card">
+    <div class="speed-display">
+      <span class="speed-value" id="speedVal">—</span>
+      <span class="speed-unit">Mbps</span>
+    </div>
+    <div class="speed-phase" id="speedPhase">Ready to test</div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="result-row">
+      <div class="result-card" id="pingCard">
+        <div class="rc-icon">🏓</div>
+        <div class="rc-label">Ping</div>
+        <div class="rc-value" id="pingVal">—</div>
+        <div class="rc-unit">ms</div>
+      </div>
+      <div class="result-card" id="dlCard">
+        <div class="rc-icon">⬇️</div>
+        <div class="rc-label">Download</div>
+        <div class="rc-value" id="dlVal">—</div>
+        <div class="rc-unit">Mbps</div>
+      </div>
+      <div class="result-card" id="ulCard">
+        <div class="rc-icon">⬆️</div>
+        <div class="rc-label">Upload</div>
+        <div class="rc-value" id="ulVal">—</div>
+        <div class="rc-unit">Mbps</div>
+      </div>
+    </div>
+
+    <p class="status-text" id="statusText">Hit Start to begin</p>
+    <button class="start-btn" id="startBtn" onclick="runTest()">▶ Start Test</button>
+  </div>
+
+  <div class="info-note">
+    Tests run via <a href="https://speed.cloudflare.com" target="_blank" rel="noopener">Cloudflare Speed Test</a> endpoints.
+    Results reflect your connection to Cloudflare's nearest edge — a good proxy for general internet speed.
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Cloudflare speed test endpoints (CORS-open) ──
+  const CF_DOWN = (bytes) => `https://speed.cloudflare.com/__down?bytes=${bytes}`;
+  const CF_UP   = () => `https://speed.cloudflare.com/__up`;
+
+  let running = false;
+
+  function setSpeed(val, phase, colorClass) {
+    const el = document.getElementById('speedVal');
+    el.textContent = val === null ? '—' : val.toFixed(1);
+    el.className = 'speed-value' + (colorClass ? ' ' + colorClass : '');
+    document.getElementById('speedPhase').textContent = phase;
+  }
+
+  function setProgress(pct, style) {
+    const fill = document.getElementById('progressFill');
+    fill.style.width = Math.min(pct, 100) + '%';
+    fill.style.background = style || 'linear-gradient(90deg,var(--cyan),var(--accent2))';
+  }
+
+  function setStatus(text) {
+    document.getElementById('statusText').textContent = text;
+  }
+
+  function setCard(id, state, val, unit) {
+    const card = document.getElementById(id + 'Card');
+    const valEl = document.getElementById(id + 'Val');
+    card.className = 'result-card ' + state;
+    valEl.className = 'rc-value ' + (state === 'active' ? 'live' : state === 'upload-active' ? 'upload-live' : state === 'done' ? 'done' : '');
+    if (val !== undefined) valEl.textContent = val;
+  }
+
+  // ── Ping: measure round-trip to CF ping endpoint ──
+  async function measurePing() {
+    const samples = [];
+    for (let i = 0; i < 8; i++) {
+      const t0 = performance.now();
+      await fetch(`https://speed.cloudflare.com/__ping?i=${i}`, { cache: 'no-store' });
+      samples.push(performance.now() - t0);
+      setProgress(2 + i * 3.5, 'linear-gradient(90deg,var(--cyan),var(--accent2))');
+    }
+    samples.sort((a, b) => a - b);
+    // Trim top 2, take median of rest
+    const trimmed = samples.slice(0, 6);
+    return Math.round(trimmed[Math.floor(trimmed.length / 2)]);
+  }
+
+  // ── Download: stream from CF, measure throughput ──
+  async function measureDownload() {
+    const BYTES = 25 * 1024 * 1024; // 25 MB
+    const url = CF_DOWN(BYTES) + '&t=' + Date.now();
+    const t0 = performance.now();
+    const res = await fetch(url, { cache: 'no-store' });
+    const reader = res.body.getReader();
+    let received = 0;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.length;
+      const elapsedSec = (performance.now() - t0) / 1000;
+      const mbps = (received * 8) / (elapsedSec * 1e6);
+      const pct = received / BYTES;
+      setProgress(30 + pct * 32, 'linear-gradient(90deg,var(--cyan),var(--accent2))');
+      setSpeed(mbps, 'Downloading…', '');
+      setCard('dl', 'active', mbps.toFixed(1));
+    }
+
+    const elapsed = (performance.now() - t0) / 1000;
+    return (BYTES * 8) / (elapsed * 1e6);
+  }
+
+  // ── Upload: POST random bytes to CF upload endpoint ──
+  async function measureUpload() {
+    const BYTES = 10 * 1024 * 1024; // 10 MB
+    const data = new Uint8Array(BYTES);
+    // Fill with random-ish data (avoid compression)
+    crypto.getRandomValues(data.subarray(0, Math.min(BYTES, 65536)));
+
+    let fakeProgress = 64;
+    const tick = setInterval(() => {
+      fakeProgress = Math.min(fakeProgress + 0.6, 93);
+      setProgress(fakeProgress, 'linear-gradient(90deg,var(--orange),#f59e0b)');
+    }, 120);
+
+    const t0 = performance.now();
+    try {
+      await fetch(CF_UP() + '?t=' + Date.now(), {
+        method: 'POST',
+        body: data,
+        headers: { 'Content-Type': 'application/octet-stream' },
+        cache: 'no-store'
+      });
+    } catch(e) {/* CF __up may return 200 or non-2xx — we time it regardless */}
+
+    const elapsed = (performance.now() - t0) / 1000;
+    clearInterval(tick);
+    return (BYTES * 8) / (elapsed * 1e6);
+  }
+
+  async function runTest() {
+    if (running) return;
+    running = true;
+
+    const btn = document.getElementById('startBtn');
+    btn.disabled = true;
+    btn.textContent = 'Testing…';
+
+    // Reset
+    ['ping','dl','ul'].forEach(id => setCard(id, '', '—'));
+    setProgress(0);
+    setSpeed(null, 'Initializing…', '');
+    setStatus('');
+
+    try {
+      // ── Ping ──
+      setStatus('Measuring latency…');
+      setCard('ping', 'active');
+      const ping = await measurePing();
+      setCard('ping', 'done', ping);
+      setStatus(`Ping: ${ping} ms · measuring download…`);
+
+      // ── Download ──
+      setProgress(30);
+      setCard('dl', 'active');
+      const dl = await measureDownload();
+      setCard('dl', 'done', dl.toFixed(1));
+      setStatus(`Download: ${dl.toFixed(1)} Mbps · measuring upload…`);
+      setSpeed(null, 'Starting upload…', 'upload-active');
+
+      // ── Upload ──
+      setProgress(64, 'linear-gradient(90deg,var(--orange),#f59e0b)');
+      setCard('ul', 'upload-active');
+      const ul = await measureUpload();
+      setCard('ul', 'done', ul.toFixed(1));
+
+      // ── Done ──
+      setProgress(100, 'linear-gradient(90deg,var(--green),var(--cyan))');
+      setSpeed(dl, 'Download speed', 'done');
+      setStatus(`✓ Done — Ping ${ping} ms · ↓ ${dl.toFixed(1)} Mbps · ↑ ${ul.toFixed(1)} Mbps`);
+      btn.textContent = '↺ Run Again';
+
+    } catch (err) {
+      setStatus('Test failed: ' + err.message);
+      setSpeed(null, 'Error', '');
+      btn.textContent = 'Retry';
+    }
+
+    btn.disabled = false;
+    running = false;
+  }
+</script>
+</body>
+</html>

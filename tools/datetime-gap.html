@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Date & Time Gap Calculator — Find the Exact Difference Between Two Dates | HexHelp AI</title>
+  <meta name="description" content="Calculate the exact difference between two dates or datetimes. Get results in years, months, weeks, days, hours, minutes, and seconds. Free, instant, no signup."/>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b0f;--bg2:#0f1117;--surface:#1a1d27;--surface2:#1f2235;--border:rgba(255,255,255,0.08);--text:#e8eaf0;--muted:#7c7f96;--accent:#6366f1;--accent2:#818cf8;--accent3:#a5b4fc;--green:#22d3a5;--cyan:#06b6d4;--orange:#f97316}
+    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(6,182,212,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(6,182,212,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:64px;background:rgba(10,11,15,0.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;font-size:1.1rem;color:var(--text)}
+    .nav-logo img{width:36px;height:36px;border-radius:8px}
+    .nav-logo .hex{color:var(--accent2)}
+    .nav-back{color:var(--muted);text-decoration:none;font-size:0.875rem;font-weight:500;transition:color 0.2s}
+    .nav-back:hover{color:var(--text)}
+    main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:4rem 2rem 6rem}
+    .page-header{text-align:center;margin-bottom:3rem}
+    .page-icon{width:72px;height:72px;border-radius:18px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);display:inline-flex;align-items:center;justify-content:center;font-size:2rem;margin-bottom:1.5rem;box-shadow:0 0 40px rgba(99,102,241,0.15)}
+    .page-title{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+    .page-title .gradient{background:linear-gradient(135deg,var(--accent2) 0%,var(--cyan) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:520px;margin:0 auto}
+
+    /* Input card */
+    .input-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;margin-bottom:1.5rem}
+
+    .field-row{display:grid;grid-template-columns:1fr auto 1fr;gap:1rem;align-items:end;margin-bottom:1.5rem}
+    @media(max-width:540px){.field-row{grid-template-columns:1fr}.swap-wrap{justify-self:center}}
+
+    .field{display:flex;flex-direction:column;gap:6px}
+    .field label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted)}
+    .field input,.field select{background:var(--bg2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:0.9rem;padding:11px 14px;width:100%;outline:none;transition:border-color 0.2s;color-scheme:dark}
+    .field input:focus,.field select:focus{border-color:rgba(99,102,241,0.5)}
+
+    .tz-row{margin-bottom:1.5rem}
+    .tz-row label{display:block;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:6px}
+    .tz-row select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:0.9rem;padding:11px 14px;outline:none;transition:border-color 0.2s;color-scheme:dark;cursor:pointer}
+    .tz-row select:focus{border-color:rgba(99,102,241,0.5)}
+
+    .swap-wrap{display:flex;align-items:center;justify-content:center;padding-bottom:2px}
+    .swap-btn{background:var(--surface2);border:1px solid var(--border);border-radius:50%;color:var(--muted);cursor:pointer;font-size:1.1rem;width:38px;height:38px;display:flex;align-items:center;justify-content:center;transition:background 0.15s,color 0.15s,border-color 0.15s}
+    .swap-btn:hover{background:rgba(99,102,241,0.2);border-color:rgba(99,102,241,0.4);color:var(--accent3)}
+
+    .now-btn-row{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem}
+    .now-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-size:0.78rem;font-weight:600;padding:7px 12px;font-family:'Inter',sans-serif;transition:all 0.15s;text-align:center}
+    .now-btn:hover{color:var(--accent3);border-color:rgba(99,102,241,0.4)}
+
+    .calc-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:12px;color:#fff;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:0.02em;transition:opacity 0.2s,transform 0.15s;font-family:'Inter',sans-serif}
+    .calc-btn:hover{opacity:0.88;transform:translateY(-1px)}
+    .calc-btn:active{transform:scale(0.98)}
+
+    .error-msg{color:#f07070;font-size:0.85rem;text-align:center;margin-top:1rem;display:none}
+
+    /* Results */
+    .results-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:2rem;display:none}
+    .results-card.visible{display:block}
+
+    .results-summary{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;padding-bottom:1.25rem;border-bottom:1px solid var(--border)}
+    .summary-dot{width:8px;height:8px;background:var(--green);border-radius:50%;flex-shrink:0;box-shadow:0 0 8px rgba(34,211,165,0.6)}
+    .summary-text{font-size:0.82rem;color:var(--muted);line-height:1.5}
+    .summary-text strong{color:var(--text)}
+    .summary-note{font-size:0.75rem;color:var(--orange);margin-left:0.5rem}
+
+    .res-section{margin-bottom:1.5rem}
+    .res-section:last-child{margin-bottom:0}
+    .res-section-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:0.75rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(255,255,255,0.04)}
+
+    .res-block{margin-bottom:0.75rem}
+    .res-block:last-child{margin-bottom:0}
+    .res-title{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem}
+    .res-value{font-family:'JetBrains Mono',monospace;font-size:0.92rem;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);line-height:1.8;word-break:break-word}
+    .res-value .num{color:var(--accent3);font-weight:700}
+    .res-value .unit{color:var(--muted);font-size:0.85em}
+
+    .totals-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem}
+    @media(max-width:400px){.totals-grid{grid-template-columns:1fr}}
+    .total-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+    .total-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem}
+    .total-val{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:700;color:var(--accent3)}
+
+    .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--green);color:#0a0f0a;padding:10px 24px;border-radius:100px;font-size:0.875rem;font-weight:700;opacity:0;transition:opacity 0.2s,transform 0.2s;pointer-events:none;z-index:1000}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo"><img src="/assets/logo.svg" alt="HexHelp"/><span><span class="hex">Hex</span>Help AI</span></a>
+  <a href="/" class="nav-back">← All Tools</a>
+</nav>
+<main>
+  <div class="page-header">
+    <div class="page-icon">📅</div>
+    <h1 class="page-title">Date & Time <span class="gradient">Gap Calculator</span></h1>
+    <p class="page-sub">Find the exact difference between two moments — years, months, weeks, days, hours, minutes, and seconds.</p>
+  </div>
+
+  <div class="input-card">
+    <div class="tz-row">
+      <label>Timezone</label>
+      <select id="tzSelect"></select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>From</label>
+        <input type="datetime-local" id="fromDt"/>
+      </div>
+      <div class="swap-wrap">
+        <button class="swap-btn" title="Swap dates" onclick="swapDates()">⇆</button>
+      </div>
+      <div class="field">
+        <label>To</label>
+        <input type="datetime-local" id="toDt"/>
+      </div>
+    </div>
+
+    <div class="now-btn-row">
+      <button class="now-btn" onclick="setNow('fromDt')">⏱ Set From = Now</button>
+      <button class="now-btn" onclick="setNow('toDt')">⏱ Set To = Now</button>
+    </div>
+
+    <button class="calc-btn" onclick="calculate()">📐 Calculate Gap</button>
+    <p class="error-msg" id="errorMsg"></p>
+  </div>
+
+  <div class="results-card" id="resultsCard">
+    <div class="results-summary">
+      <div class="summary-dot"></div>
+      <div class="summary-text" id="summaryText"></div>
+    </div>
+
+    <!-- Calendar breakdowns -->
+    <div class="res-section">
+      <div class="res-section-label">📦 Calendar Breakdowns</div>
+
+      <div class="res-block">
+        <div class="res-title">Years / Months / Weeks / Days / Hours / Minutes / Seconds</div>
+        <div class="res-value" id="resYMWDHMS"></div>
+      </div>
+      <div class="res-block">
+        <div class="res-title">Years / Months / Days / Hours / Minutes / Seconds</div>
+        <div class="res-value" id="resYMDHMS"></div>
+      </div>
+      <div class="res-block">
+        <div class="res-title">Months / Weeks / Days / Hours / Minutes / Seconds</div>
+        <div class="res-value" id="resMWDHMS"></div>
+      </div>
+      <div class="res-block">
+        <div class="res-title">Weeks / Days / Hours / Minutes / Seconds</div>
+        <div class="res-value" id="resWDHMS"></div>
+      </div>
+      <div class="res-block">
+        <div class="res-title">Days / Hours / Minutes / Seconds</div>
+        <div class="res-value" id="resDHMS"></div>
+      </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="res-section">
+      <div class="res-section-label">🔢 Grand Totals</div>
+      <div class="totals-grid">
+        <div class="total-card">
+          <div class="total-label">Total Days</div>
+          <div class="total-val" id="totDays">—</div>
+        </div>
+        <div class="total-card">
+          <div class="total-label">Total Hours</div>
+          <div class="total-val" id="totHours">—</div>
+        </div>
+        <div class="total-card">
+          <div class="total-label">Total Minutes</div>
+          <div class="total-val" id="totMinutes">—</div>
+        </div>
+        <div class="total-card">
+          <div class="total-label">Total Seconds</div>
+          <div class="total-val" id="totSeconds">—</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── Timezone dropdown ──
+  const tzSelect = document.getElementById('tzSelect');
+  const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  let tzList = ['UTC'];
+  try {
+    if (typeof Intl.supportedValuesOf === 'function') {
+      tzList = Intl.supportedValuesOf('timeZone');
+    } else {
+      tzList = ['UTC','America/New_York','America/Chicago','America/Denver','America/Los_Angeles','America/Sao_Paulo','Europe/London','Europe/Paris','Europe/Berlin','Europe/Moscow','Asia/Dubai','Asia/Kolkata','Asia/Bangkok','Asia/Singapore','Asia/Shanghai','Asia/Tokyo','Asia/Seoul','Asia/Jakarta','Australia/Sydney','Pacific/Auckland','Pacific/Honolulu'];
+    }
+  } catch(e) {}
+
+  if (!tzList.includes(userTZ)) tzList = [userTZ, ...tzList];
+  else tzList = [userTZ, ...tzList.filter(t => t !== userTZ)];
+
+  tzList.forEach(tz => {
+    const opt = document.createElement('option');
+    opt.value = tz;
+    opt.textContent = tz === userTZ ? `${tz} (your local time)` : tz;
+    tzSelect.appendChild(opt);
+  });
+
+  // ── Default inputs: now → +24h ──
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function toInputVal(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+  const now = new Date();
+  document.getElementById('fromDt').value = toInputVal(now);
+  document.getElementById('toDt').value = toInputVal(new Date(now.getTime() + 86400000));
+
+  function setNow(id){ document.getElementById(id).value = toInputVal(new Date()); }
+  function swapDates(){
+    const a = document.getElementById('fromDt').value;
+    const b = document.getElementById('toDt').value;
+    document.getElementById('fromDt').value = b;
+    document.getElementById('toDt').value = a;
+  }
+
+  // ── Parse datetime-local string as the selected timezone ──
+  function parseInTZ(dtStr, tz) {
+    const [datePart, timePart] = dtStr.split('T');
+    const [y, mo, d] = datePart.split('-').map(Number);
+    const [h, mi] = timePart.split(':').map(Number);
+    const probeUTC = Date.UTC(y, mo - 1, d, h, mi, 0);
+    const formatter = new Intl.DateTimeFormat('en-CA', {
+      timeZone: tz, year:'numeric', month:'2-digit', day:'2-digit',
+      hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: false
+    });
+    const parts = {};
+    formatter.formatToParts(new Date(probeUTC)).forEach(p => { if (p.type !== 'literal') parts[p.type] = Number(p.value); });
+    const renderedUTC = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute, parts.second);
+    return new Date(probeUTC + (probeUTC - renderedUTC));
+  }
+
+  // ── Calendar diff (timezone-aware) ──
+  function calDiff(fromDate, toDate) {
+    const tz = tzSelect.value;
+    function comps(d) {
+      const p = {};
+      new Intl.DateTimeFormat('en-CA', {
+        timeZone: tz, year:'numeric', month:'numeric', day:'numeric',
+        hour:'numeric', minute:'numeric', second:'numeric', hour12: false
+      }).formatToParts(d).forEach(pt => { if (pt.type !== 'literal') p[pt.type] = Number(pt.value); });
+      return p;
+    }
+    const a = comps(fromDate), b = comps(toDate);
+    let years=b.year-a.year, months=b.month-a.month, days=b.day-a.day;
+    let hours=b.hour-a.hour, minutes=b.minute-a.minute, seconds=(b.second||0)-(a.second||0);
+    if (seconds<0){seconds+=60;minutes--;}
+    if (minutes<0){minutes+=60;hours--;}
+    if (hours<0){hours+=24;days--;}
+    if (days<0){
+      months--;
+      const prevMonthLastDay = new Date(Date.UTC(b.year, b.month - 1, 0));
+      days += comps(prevMonthLastDay).day;
+    }
+    if (months<0){months+=12;years--;}
+    return {years, months, days, hours, minutes, seconds};
+  }
+
+  function pluralize(n, word) {
+    return `<span class="num">${n.toLocaleString()}</span><span class="unit"> ${word}${n !== 1 ? 's' : ''}</span>`;
+  }
+
+  function fmt(parts) {
+    const pieces = parts.filter(([n]) => n > 0).map(([n, u]) => pluralize(n, u));
+    return pieces.length ? pieces.join('  ') : '<span class="unit">0 seconds</span>';
+  }
+
+  function fmtDate(d, tz) {
+    return d.toLocaleString('en-GB', {
+      timeZone: tz, day:'2-digit', month:'short', year:'numeric',
+      hour:'2-digit', minute:'2-digit', second:'2-digit', hour12: false
+    });
+  }
+
+  function calculate() {
+    const fromStr = document.getElementById('fromDt').value;
+    const toStr = document.getElementById('toDt').value;
+    const errEl = document.getElementById('errorMsg');
+    errEl.style.display = 'none';
+    document.getElementById('resultsCard').classList.remove('visible');
+
+    if (!fromStr || !toStr) {
+      errEl.textContent = 'Please fill in both date fields.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const tz = tzSelect.value;
+    let fromDate = parseInTZ(fromStr, tz);
+    let toDate   = parseInTZ(toStr,   tz);
+    let swapped  = false;
+
+    if (toDate < fromDate) { [fromDate, toDate] = [toDate, fromDate]; swapped = true; }
+
+    const diffMs = toDate - fromDate;
+    if (diffMs === 0) {
+      errEl.textContent = 'The two moments are identical — gap is zero.';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const totalSec  = Math.floor(diffMs / 1000);
+    const totalMin  = Math.floor(totalSec / 60);
+    const totalHr   = Math.floor(totalMin / 60);
+    const totalDays = Math.floor(totalHr / 24);
+    const totalWeeks= Math.floor(totalDays / 7);
+
+    const { years, months, days: calDays, hours, minutes, seconds } = calDiff(fromDate, toDate);
+    const calWeeks  = Math.floor(calDays / 7);
+    const calRem    = calDays % 7;
+    const totalMo   = years * 12 + months;
+
+    // Totals (remainder-based)
+    const remDays = totalDays % 7;
+    const remHrs  = totalHr  % 24;
+    const remMins = totalMin % 60;
+    const remSecs = totalSec % 60;
+
+    // Summary
+    document.getElementById('summaryText').innerHTML =
+      `<strong>${fmtDate(fromDate, tz)}</strong> → <strong>${fmtDate(toDate, tz)}</strong>` +
+      (swapped ? `<span class="summary-note">(swapped to positive gap)</span>` : '');
+
+    // Calendar breakdowns
+    document.getElementById('resYMWDHMS').innerHTML = fmt([[years,'year'],[months,'month'],[calWeeks,'week'],[calRem,'day'],[hours,'hour'],[minutes,'minute'],[seconds,'second']]);
+    document.getElementById('resYMDHMS').innerHTML  = fmt([[years,'year'],[months,'month'],[calDays,'day'],[hours,'hour'],[minutes,'minute'],[seconds,'second']]);
+    document.getElementById('resMWDHMS').innerHTML  = fmt([[totalMo,'month'],[calWeeks,'week'],[calRem,'day'],[hours,'hour'],[minutes,'minute'],[seconds,'second']]);
+    document.getElementById('resWDHMS').innerHTML   = fmt([[totalWeeks,'week'],[remDays,'day'],[remHrs,'hour'],[remMins,'minute'],[remSecs,'second']]);
+    document.getElementById('resDHMS').innerHTML    = fmt([[totalDays,'day'],[remHrs,'hour'],[remMins,'minute'],[remSecs,'second']]);
+
+    // Totals
+    document.getElementById('totDays').textContent    = totalDays.toLocaleString();
+    document.getElementById('totHours').textContent   = totalHr.toLocaleString();
+    document.getElementById('totMinutes').textContent = totalMin.toLocaleString();
+    document.getElementById('totSeconds').textContent = totalSec.toLocaleString();
+
+    document.getElementById('resultsCard').classList.add('visible');
+    document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
