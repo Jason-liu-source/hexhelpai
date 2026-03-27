@@ -325,14 +325,17 @@
     <!-- TABS -->
     <div class="tabs-wrapper">
       <button class="tab-btn active" id="tab-network" onclick="switchTab('network')">
-        🌐 Network Tools <span class="tab-count">4</span>
+        🌐 Network <span class="tab-count">4</span>
       </button>
-      <button class="tab-btn" id="tab-other" onclick="switchTab('other')">
-        🔧 Other Tools <span class="tab-count">10</span>
+      <button class="tab-btn" id="tab-dev" onclick="switchTab('dev')">
+        🛠️ Developer <span class="tab-count">5</span>
+      </button>
+      <button class="tab-btn" id="tab-convert" onclick="switchTab('convert')">
+        🔄 Converters <span class="tab-count">5</span>
       </button>
     </div>
 
-    <!-- NETWORK TOOLS TAB -->
+    <!-- NETWORK TAB -->
     <div class="tab-pane active" id="pane-network">
       <div class="tab-section-label">— Network & Domain Utilities —</div>
       <div class="tools-grid">
@@ -368,38 +371,10 @@
       </div>
     </div>
 
-    <!-- OTHER TOOLS TAB -->
-    <div class="tab-pane" id="pane-other">
-      <div class="tab-section-label">— Everyday Utilities for Everyone —</div>
+    <!-- DEVELOPER TAB -->
+    <div class="tab-pane" id="pane-dev">
+      <div class="tab-section-label">— Developer Utilities —</div>
       <div class="tools-grid">
-
-        <a href="/tools/qrcode.html" class="tool-card">
-          <div class="tool-icon icon-purple">📱</div>
-          <div class="tool-name">QR Code Generator</div>
-          <div class="tool-desc">Turn any URL, text, contact, or Wi-Fi details into a scannable QR code. Download as PNG instantly.</div>
-          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
-        </a>
-
-        <a href="/tools/units.html" class="tool-card">
-          <div class="tool-icon icon-teal">📐</div>
-          <div class="tool-name">Unit Converter</div>
-          <div class="tool-desc">Convert length, weight, temperature, speed, area, volume and data size — all categories in one place with live conversion.</div>
-          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
-        </a>
-
-        <a href="/tools/color.html" class="tool-card">
-          <div class="tool-icon icon-pink">🎨</div>
-          <div class="tool-name">Color Picker & Converter</div>
-          <div class="tool-desc">Pick colors visually and convert between HEX, RGB, HSL, and HSB instantly. Copy any format with one click.</div>
-          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
-        </a>
-
-        <a href="/tools/timestamp.html" class="tool-card">
-          <div class="tool-icon icon-cyan">🕐</div>
-          <div class="tool-name">Unix Timestamp Converter</div>
-          <div class="tool-desc">Convert Unix timestamps to human-readable dates and back. Shows local, UTC, and relative time. Live current timestamp.</div>
-          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
-        </a>
 
         <a href="/tools/hash.html" class="tool-card">
           <div class="tool-icon icon-red">🔒</div>
@@ -436,10 +411,46 @@
           <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
         </a>
 
+      </div>
+    </div>
+
+    <!-- CONVERTERS TAB -->
+    <div class="tab-pane" id="pane-convert">
+      <div class="tab-section-label">— Converters & Calculators —</div>
+      <div class="tools-grid">
+
+        <a href="/tools/units.html" class="tool-card">
+          <div class="tool-icon icon-teal">📐</div>
+          <div class="tool-name">Unit Converter</div>
+          <div class="tool-desc">Convert length, weight, temperature, speed, area, volume and data size — all categories in one place with live conversion.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/color.html" class="tool-card">
+          <div class="tool-icon icon-pink">🎨</div>
+          <div class="tool-name">Color Picker & Converter</div>
+          <div class="tool-desc">Pick colors visually and convert between HEX, RGB, HSL, and HSB instantly. Copy any format with one click.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/timestamp.html" class="tool-card">
+          <div class="tool-icon icon-cyan">🕐</div>
+          <div class="tool-name">Unix Timestamp Converter</div>
+          <div class="tool-desc">Convert Unix timestamps to human-readable dates and back. Shows local, UTC, and relative time. Live current timestamp.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
         <a href="/tools/datetime-gap.html" class="tool-card">
           <div class="tool-icon icon-purple">📅</div>
           <div class="tool-name">Date & Time Gap Calculator</div>
           <div class="tool-desc">Calculate the exact difference between two dates or datetimes — years, months, weeks, days, hours, minutes, and seconds.</div>
+          <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
+        </a>
+
+        <a href="/tools/qrcode.html" class="tool-card">
+          <div class="tool-icon icon-purple">📱</div>
+          <div class="tool-name">QR Code Generator</div>
+          <div class="tool-desc">Turn any URL, text, contact, or Wi-Fi details into a scannable QR code. Download as PNG instantly.</div>
           <div class="tool-footer"><span class="tool-tag tag-live">● Live</span><span class="tool-arrow">↗</span></div>
         </a>
 
@@ -464,11 +475,12 @@
       document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
       document.getElementById('tab-' + tab).classList.add('active');
       document.getElementById('pane-' + tab).classList.add('active');
+      history.replaceState(null, '', '#' + tab);
     }
 
     // Preserve tab state via URL hash
     const hash = location.hash.replace('#','');
-    if (hash === 'other') switchTab('other');
+    if (['dev','convert'].includes(hash)) switchTab(hash);
   </script>
 
 </body>
